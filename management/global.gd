@@ -8,6 +8,8 @@ var using_gamepad := false
 
 var game_state : GameState
 
+export(PackedScene) var endgame_scene
+
 const save_path := "user://autosave.tres"
 const old_save_backup := "user://autosave.backup.tres"
 var valid_game_state := false setget set_valid_game_state, get_valid_game_state
@@ -257,3 +259,15 @@ func save_complete(result):
 func _save_sync(p_state : GameState):
 	var r = ResourceSaver.save(save_path, p_state)
 	call_deferred("save_complete", r)
+
+func _on_event(event):
+	match event:
+		"endgame":
+			var p = get_player()
+			if p:
+				var a = p.get_fade_animation()
+				a.play("fade_to_black")
+				yield(a, "animation_finished")
+				var _x = get_tree().change_scene_to(endgame_scene)
+			else:
+				var _x = get_tree().change_scene_to(endgame_scene)

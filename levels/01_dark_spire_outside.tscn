@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://levels/part_dark_spire.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://levels/level.gd" type="Script" id=3]
 
 [node name="dark_spire" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
 
 [node name="player" parent="." index="2" instance=ExtResource( 2 )]
 transform = Transform( -0.0313598, 0, -0.999508, 0, 1, 0, 0.999508, 0, -0.0313598, 195.656, 16.7971, 9.57861 )

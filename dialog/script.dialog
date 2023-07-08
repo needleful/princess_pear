@@ -26,7 +26,7 @@ You -- Oh, a letter? Let's see: [event: open_letter]
 		Once inside, we can form a plan to extradite that meanie and make him stand trial for his crimes!
 		[event: to_spire]
 		I suspect we'll be home before the end of this banquet. Just in time for a slice of cake!
-	[exit_event: end_intro]
+	[exit_event: next_level]
 > How rude! Nuke him.
 	[event: leaving_to_nuke]
 	Yes your majesty! Right away!
@@ -177,13 +177,13 @@ You -- Why do I need to use
 * You hand him the letter.
 Castle Guard -- Curdled ink... fouled paper, and the official Gizzard letterhead.
 	Welcome to the Dark Spire, princess...
-[exit_event: castle_entry]
+[exit_event: next_level]
 
 :item(invitation) :- entered_from == "guard_intro"
 [event: invitation_sassy]
 You -- Tell Lord Gizzard I've arrived.
 Castle Guard -- Hm... Alright. You can come in.
-[exit_event: castle_entry]
+[exit_event: next_level]
 
 :m_intro
 {local_talked == 0}

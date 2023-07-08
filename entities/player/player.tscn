@@ -8,7 +8,6 @@
 [ext_resource path="res://ui/pause_menu/pause_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui/default_theme.tres" type="Theme" id=7]
 [ext_resource path="res://ui/dialog/dialog_viewer.tscn" type="PackedScene" id=8]
-[ext_resource path="res://levels/endgame.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ui/fonts/narration_font.tres" type="DynamicFont" id=10]
 
 [sub_resource type="ShaderMaterial" id=4]
@@ -33,8 +32,8 @@ radius = 0.2
 [sub_resource type="SphereShape" id=5]
 radius = 0.5
 
-[sub_resource type="BoxShape" id=6]
-extents = Vector3( 0.741259, 1, 0.945753 )
+[sub_resource type="CylinderShape" id=16]
+radius = 1.64234
 
 [sub_resource type="PrismMesh" id=7]
 
@@ -51,6 +50,22 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "fade_into_scene"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=14]
@@ -124,7 +139,6 @@ tracks/0/keys = {
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 2
 script = ExtResource( 1 )
-endgame_scene = ExtResource( 9 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
@@ -165,9 +179,9 @@ shape = SubResource( 5 )
 collision_layer = 0
 collision_mask = 4
 
-[node name="CollisionShape" type="CollisionShape" parent="intention/interact"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.536467 )
-shape = SubResource( 6 )
+[node name="CollisionShape2" type="CollisionShape" parent="intention/interact"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2925 )
+shape = SubResource( 16 )
 
 [node name="MeshInstance" type="MeshInstance" parent="intention"]
 transform = Transform( 0.098063, 0, 0, 0, -5.75437e-09, -0.131645, 0, 0.177136, -7.74287e-09, 0, 0.970113, 0.615948 )
@@ -254,7 +268,9 @@ anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="fade_to_black"]
+autoplay = "fade_into_scene"
 anims/RESET = SubResource( 13 )
+anims/fade_into_scene = SubResource( 15 )
 anims/fade_to_black = SubResource( 14 )
 
 [node name="free_nodes" type="Node" parent="."]
