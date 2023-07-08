@@ -36,6 +36,7 @@ var r_interpolate := RegEx.new()
 
 var otherwise := false
 var talked := 0
+var local_talked := 0
 var skip_reply := false
 var discussed: Dictionary
 var is_exiting := false
@@ -112,6 +113,7 @@ func start(p_source_node: Node, p_sequence: Resource, speaker: Node = null, star
 	var first_index = INF
 	var s: DialogItem
 	entered_from = starting_label
+	local_talked = Global.stat(get_talked_stat() + ":" + entered_from)
 	if starting_label != "":
 		s = sequence.find_label(starting_label)
 		if !s:
@@ -125,8 +127,6 @@ func start(p_source_node: Node, p_sequence: Resource, speaker: Node = null, star
 		current_item = sequence.find_index(first_index)
 	else:
 		current_item = s
-	if "friendly_id" in main_speaker and main_speaker.friendly_id != "":
-		Global.remember(main_speaker.friendly_id)
 	advance()
 
 func clear():
@@ -146,7 +146,8 @@ func clear_replies():
 
 func _on_message_added(child: Node):
 	yield(get_tree(), "idle_frame")
-	message_container.scroll_to_child(child)
+	if is_instance_valid(child):
+		message_container.scroll_to_child(child)
 
 func get_next():
 	var c: DialogItem
@@ -297,7 +298,8 @@ func _resize_replies():
 	message_container.scroll_to_end()
 
 func _on_input_timer_timeout():
-	replies.get_child(0).grab_focus()
+	if replies and replies.get_child_count():
+		replies.get_child(0).grab_focus()
 
 func choose_reply(item: DialogItem, skip: bool):
 	if !skip:
@@ -365,7 +367,9 @@ func insert_label(text: String, format: String, font_override := ""):
 	elif format in fonts:
 		font = fonts[format]
 	
-	if format in colors:
+	if font_override in colors:
+		color = colors[font_override]
+	elif format in colors:
 		color = colors[format]
 	
 	var label := Label.new()
@@ -580,6 +584,8 @@ func noskip():
 func exit(state := PlayerBody.State.Ground):
 	var stat: String = get_talked_stat()
 	var _x = Global.add_stat(stat)
+	var lstat:String = get_talked_stat() + ":" + entered_from
+	_x = Global.add_stat(lstat)
 	emit_signal("exited", state)
 	if main_speaker.has_method("exit_dialog"):
 		main_speaker.exit_dialog()

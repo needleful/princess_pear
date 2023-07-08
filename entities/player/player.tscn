@@ -247,16 +247,18 @@ anchor_bottom = 1.0
 
 [node name="viewer" parent="ui/modal/dialog" instance=ExtResource( 8 )]
 anchor_left = 0.7
+margin_left = -302.8
 margin_top = 10.0
 margin_right = -10.0
 margin_bottom = -10.0
 grow_horizontal = 0
-rect_min_size = Vector2( 500, 0 )
+rect_min_size = Vector2( 520, 0 )
 fonts = {
 "letter": ExtResource( 10 ),
 "narration": ExtResource( 10 )
 }
 colors = {
+"hint": Color( 0.866667, 0.407843, 0.101961, 1 ),
 "narration": Color( 0.156863, 0.12549, 0.12549, 1 ),
 "you": Color( 0.027451, 0.376471, 0.270588, 1 )
 }

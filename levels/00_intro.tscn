@@ -24,7 +24,7 @@ extents = Vector3( 1, 1, 1.16504 )
 
 [node name="intro" type="Spatial" groups=["dialog_event_reciever"]]
 script = ExtResource( 3 )
-next_scene = ExtResource( 6 )
+next_level = ExtResource( 6 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98299, 0 )

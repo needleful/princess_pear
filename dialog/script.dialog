@@ -8,7 +8,6 @@ You -- Oh, a letter? Let's see: [event: open_letter]
 	[format: letter]"There shall be a banquet on the first day, filled with whatever disgusting sugary treats you people call food.
 	[format: letter]"Cross that off, she'd take offense to that. Filled with cakes, sweets, et cetera.
 	[format: letter]"Also, if you don't come I'm going to declare war on your kingdom.
-
 	[format: letter]"From,
 	[format: letter]"Lord Gizzard
 	[format: letter]"Dictated but not read."
@@ -22,10 +21,10 @@ You -- Oh, a letter? Let's see: [event: open_letter]
 		[event: dark_spire]
 		The Dark Spire is so fortified, none of my spies have ever seen the inside. Or, at least, never returned to tell of it...
 		[event: capture]
-		He's just handed us an invitation to see it ourselves!
-		Once inside, we can form a plan to extradite that meanie and make him stand trial for his crimes!
+		And now, he's handed us an invitation to see it ourselves!
+		Once inside, we can form a plan to extradite that bully and put him on trial for his crimes and overall unpleasant demeanor!
 		[event: to_spire]
-		I suspect we'll be home before the end of this banquet. Just in time for a slice of cake!
+		I suspect we'll be home before the end of this banquet, with Gizzard in tow.
 	[exit_event: next_level]
 > How rude! Nuke him.
 	[event: leaving_to_nuke]
@@ -151,16 +150,18 @@ You -- Here it is!
 Pea Plum Pink -- Excellent! We'll need that to gain entry.
 [goto: loop]
 
-:fred_intro
+:frank_intro
 Hey.
 You -- Why are you here?
 You tell me.
-[event: fred_leaves]
+[event: frank_leaves]
 > To steal the Martin brothers' valor!
-> To betray us to Lord Gizzard.
+> To betray us to Lord Gizzard!
+> To bellyache the entire mission!
+> To steal any valuables you find in the Spire!
 You -- Hey, where are you going?
 	... Get back here!
-	Pea Fred, you foul traitor!
+	Pea Frank, you traitor! That's desertion!
 	I hate you!!
 [exit]
 
@@ -185,8 +186,8 @@ You -- Tell Lord Gizzard I've arrived.
 Castle Guard -- Hm... Alright. You can come in.
 [exit_event: next_level]
 
-:m_intro
-{local_talked == 0}
+:makau_tour
+[main_speaker at: 0]
 	[event: m_laugh]
 	Maka'u -- Aaah hahaha! So the little princess arrived!
 		[event: m_teeth]
@@ -195,8 +196,11 @@ Castle Guard -- Hm... Alright. You can come in.
 	> I'm scared.
 		[Global add_stat: makau_ego]
 		[event: m_laugh]
-		Hahaha! As I knew you would be.
+		Hahahahaaa! As I knew you would be.
 	> It's rude to snarl at people.
 		[Global add_stat: makau_humility]
 		[event: m_laugh]
-		Eh... Hahaha! Of course it is! I am the rudest. The crudest, dare I say.
+		Eh... Hahaha! Of course it is! I am rude! The rudest, even!
+	Let's not dally. I'm to show you the might of the Spire, and by extension our Kingdom.
+	Meet me at the fountain!
+	[exit_event: m_walk1]

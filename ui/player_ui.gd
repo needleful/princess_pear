@@ -32,7 +32,7 @@ func start_dialog(speaker):
 	if p:
 		p.dialog_lock()
 	set_mode(Mode.Dialog)
-	$dialog/viewer.start(speaker, speaker.sequence, speaker.custom_entry)
+	$dialog/viewer.start(speaker, speaker.sequence, speaker, speaker.custom_entry)
 
 func end_dialog():
 	var p := Global.get_player()
