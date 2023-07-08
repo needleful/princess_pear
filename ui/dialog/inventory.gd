@@ -5,7 +5,7 @@ signal item_focused(item)
 signal cancelled
 
 onready var item_name := $h/item_properties/label
-onready var item_desc := $h/item_properties/description
+onready var item_desc := $h/item_properties/ScrollContainer/description
 onready var item_viewer := $h/list
 
 

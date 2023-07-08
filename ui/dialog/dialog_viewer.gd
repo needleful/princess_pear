@@ -72,6 +72,8 @@ func _ready():
 	end()
 
 func _input(event):
+	if !is_visible_in_tree():
+		return
 	if event.is_action_pressed("dialog_item"):
 		emit_signal("pick_item")
 		disable_replies()
