@@ -113,6 +113,9 @@ material/0 = SubResource( 1 )
 [node name="StaticBody" parent="tower/pire003" index="0"]
 collision_layer = 257
 
+[node name="StaticBody" parent="tower" index="10"]
+collision_layer = 257
+
 [node name="terrain" parent="." index="1"]
 material/0 = ExtResource( 6 )
 
