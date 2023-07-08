@@ -1,0 +1,202 @@
+:start
+[event: door]
+Your majesty! We've received a letter from Lord Gizzard!
+You -- Oh, a letter? Let's see: [event: open_letter]
+	[Global add_item: invitation]
+	[format: letter]"Princess Pear,
+	[format: letter]"The mighty Lord Gizzard invites you and your court to a negotiation/tennis tournament/go-kart racing weekend at the Dark Spire, in the heart of the Kingdom of Mischief.
+	[format: letter]"There shall be a banquet on the first day, filled with whatever disgusting sugary treats you people call food.
+	[format: letter]"Cross that off, she'd take offense to that. Filled with cakes, sweets, et cetera.
+	[format: letter]"Also, if you don't come I'm going to declare war on your kingdom.\n
+
+	[format: letter]"From,
+	[format: letter]"Lord Gizzard
+	[format: letter]"Dictated but not read."
+> How lovely! Tennis and cakes sounds like a delightful weekend!
+	You're going to go?!
+	You -- Of course! I've been waiting for something like this.
+	You have?
+	You -- I have. This is our chance to capture Lord Gizzard.
+		[event: the_plan]
+		He's terrorized the Garden Kingdom for years, now.
+		[event: dark_spire]
+		The Dark Spire is so fortified, none of my spies have ever seen the inside. Or, at least, never returned to tell of it...
+		[event: capture]
+		He's just handed us an invitation to see it ourselves!
+		Once inside, we can form a plan to extradite that meanie and make him stand trial for his crimes!
+		[event: to_spire]
+		I suspect we'll be home before the end of this banquet. Just in time for a slice of cake!
+	[exit_event: end_intro]
+> How rude! Nuke him.
+	[event: leaving_to_nuke]
+	Yes your majesty! Right away!
+	[event: silos]
+	* At Princess Pear's behest, General Pea Pie Po opened all 475 nuclear missile silos and fired upon the Kingdom of Mischief.
+	[event: lizard_wizard]
+	* Despite the efforts of Lord Gizzard's right hand man, the Lizard Wizard, to divert the attack, 341 nuclear missiles struck the kingdom, crippling its military operations and wiping out 35% of its population in less than two hours.
+	[event: nuked]
+	* The irradiated dust and ash blotted the sun, casting the entire planet into a nuclear winter lasting 400 years.
+	[event: dead]
+	* Everyone died.
+	[exit_event: endgame]
+* (If you see this text, it's a bug!)
+[exit]
+
+:pepipo_intro
+{local_talked == 0}
+	Well... we-we're here...
+	Oh, I'm gonna to be sick...
+	> No need to be frightened, Po!
+		You -- I'll be here to protect you!
+		Oh no... If you protect me, do I even deserve the title of General?
+		You -- ...Um,
+		Oh no!!!
+	> You're a general! You should be used to these sorts of things by now!
+		During our war against the Marshmallow Kitten Kingdom, it was easy for me to stay stoic and calm.
+		But now, I don't know. I suppose age is getting to me. I'm nearly twelve, after all.
+{otherwise}
+	Do you think the contractors will be able to pull it off?
+	You -- I've been told they're the best of the best. I'll see what they think of it.
+[exit]
+
+:brothers_intro
+{local_talked == 0}
+	Martin -- Alright madame! We don't usually service this far out, but if food and board are paid for, it's all fine by me.
+	[event: louis_point]
+	Louis -- [format: italic] M-Martin... je ne pense pas que ce soit un travail normal...
+	* They speak in an unknowable alien language for a moment.
+	[event: martin_shock]
+	Martin -- [format: italic] ... Merde!
+	[event: brothers_reset]
+	You -- Are you two discussing strategy? Do you have any suggestions? I heard you were the best mercenaries in the kingdom.
+	Martin -- Best... contractors, yes...
+		My advice is, uh.... do not let... the uh... bad guys see us.
+	[Global add_stat: stealth]
+	You -- Ah, of course! It's important not to miss the simple things... Do you have any paper?
+	[event: martin_paper]
+	Martin -- Uh, here you go.
+	[Global add_item: map]
+	You -- This will do nicely!
+		[format: hint] I'll use this to draw a map of the castle as I investigate. I'll note every important detail, such as patrol routes, sparsely-populated areas, and anything else that will ensure a clean getaway.
+		Once we reconvene after the reconnaissance, I'll add what you've found and we can make our plan to capture Lord Gizzard!
+	Louis -- L-Lord Gizzard! Oh non...
+	[event: ear_pieces]
+	You -- [format: hint] Also, put in these earpieces. You can radio in at any time and tell me how you're doing.
+	Martin -- Of course, madame...
+{otherwise}
+	Martin -- We shall be right behind you, Madame!
+	Louis -- Oh...
+[exit]
+
+:peplupi_intro
+{local_talked == 0}
+	You -- You are my most trusted advisor. Do you really want to risk your wisdom, if we fail?
+	If my Princess is captured, I am as good as soup, my liege.
+		[format: hint] I shall help in any way I can. If you are lost, come find me and I shall offer my best advice.
+	You -- The choirs of Heaven shall sing of your courage, Pea Plum Pink!
+	Thank you, your highness. Did you need any help at the moment?
+{otherwise}
+	At the ready, madame.
+:ppp_loop
+> What am I doing?
+	Our itinerary today has three events: the Castle Tour, the Wizard's Counsel, and the Banquet.
+		In the Castle Tour, General Maka'u is guiding you through the castle, while we are to wait in the east courtyard.
+		[format: hint] This is your chance to explore the castle and find every route we can use in our escape, and every trap we must anticipate.
+		Once finished, you and Lord Gizzard's sorcerer, the Wizard Lizard, shall have a private discussion over mini golf.
+	You -- Oh my! Miniature golf! Hopefully a smaller ball makes it easier.
+	The ball... Alright.
+	[format: hint] You will have to find a way out of this discussion long enough to tell us your plan for reaching the Gizzard King.
+	And finally, the Banquet.
+	It says the Gizzard King shall make his appearance near the end of the banquet.
+	[format: hint] This is when we shall capture Gizzard. We shall keep you updated through your radio.
+	[format: hint] You may need to give us advice as the evening progresses, if there are any complications in the plan.
+	[format: hint] It is imperative you remain calm and keep Gizzard's court occupied while we act our your plan.
+	Upon the go-ahead, you shall take your leave of the dinner for some "fresh air", and make a dashing escape to our escort, and we will return to the castle!
+	[goto: ppp_loop]
+> Who are those dashing young men in overalls?
+	Those are the Brothers Martin. I've been told they're the best contractors in the Garden Kingdom.
+		They don't look like mercenaries, but it was a very trustworthy source, so I'll defer to their good judgement.
+	[goto: ppp_loop]
+> How do we get into the castle?
+	There is a guard at the front door. He may ask for your ticket, in which case you should go to your bag and bring out the letter.
+	[mention: ppp_letter] 
+	[! Global count: invitation]
+		You -- ... I don't have it.
+		Pardon?
+		You -- I... must have forgotten it at home.
+		Um, your highness, that's a softlock. You're simply supposed to have it.
+		You -- What?!
+		Let's not worry, I'm sure it's around here somewhere.
+		* You two search every vehicle in the convoy, eventually finding the letter wedged in the seat of the Martins' van, for some reason.
+		[Global add_item: invitation]
+		Phew! That was scary.
+		You -- Yes, I'll be sure to write a letter to "me@games.needleful.net" to inform him that the letter was misplaced!
+		[format: hint] You can retrieve the letter from your bag to complete the inventory tutorial or whatever this was supposed to be.
+	{otherwise}
+		[format: hint] Do you have the letter? Retrieve it from your bag and we'll make sure.
+	...
+	Any time now, your highness.
+	... Do you know the button?
+	It's the button that says "Use Your Bag" or something in that vein.
+	... Perhaps it says "Use Item"? I can only do so much, this script was written before the user interface was made.
+	...
+	I'll just assume you don't want to show me the letter.
+	[goto: ppp_loop]
+> No more questions for now, Pea Plum Pink.
+	Of course, your majesty.
+[exit]
+
+:item(invitation) :- mentioned("ppp_letter")
+You -- Here it is!
+Pea Plum Pink -- Excellent! We'll need that to gain entry.
+[goto: loop]
+
+:fred_intro
+Hey.
+You -- Why are you here?
+You tell me.
+[event: fred_leaves]
+> To steal the Martin brothers' valor!
+> To betray us to Lord Gizzard.
+You -- Hey, where are you going?
+	... Get back here!
+	Pea Fred, you foul traitor!
+	I hate you!!
+[exit]
+
+:guard_intro
+Castle Guard -- Halt! Who goes there?
+You -- I'm Princess Pear of the Garden Kingdom, Lord Gizzard requested my audience.
+Castle Guard -- I'll be the judge of that! Present your invitation and then you may enter.
+[mention: guard_letter]
+* (Hint: use your bag to select an item in conversation!)
+You -- Why do I need to use 
+
+:item(invitation) :- mentioned("guard_letter")
+[event: invitation]
+* You hand him the letter.
+Castle Guard -- Curdled ink... fouled paper, and the official Gizzard letterhead.
+	Welcome to the Dark Spire, princess...
+[exit_event: castle_entry]
+
+:item(invitation) :- entered_from == "guard_intro"
+[event: invitation_sassy]
+You -- Tell Lord Gizzard I've arrived.
+Castle Guard -- Hm... Alright. You can come in.
+[exit_event: castle_entry]
+
+:m_intro
+{local_talked == 0}
+	[event: m_laugh]
+	Maka'u -- Aaah hahaha! So the little princess arrived!
+		[event: m_teeth]
+		I am General Maka'u. In my old tongue, I am called Fear.
+		It suits me, I think.
+	> I'm scared.
+		[Global add_stat: makau_ego]
+		[event: m_laugh]
+		Hahaha! As I knew you would be.
+	> It's rude to snarl at people.
+		[Global add_stat: makau_humility]
+		[event: m_laugh]
+		Eh... Hahaha! Of course it is! I am the rudest. The crudest, dare I say.

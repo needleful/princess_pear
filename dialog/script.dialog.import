@@ -1,0 +1,13 @@
+[remap]
+
+importer="np.dialog"
+type="Resource"
+path="res://.import/script.dialog-c39567c2383f9a1c95d5f1df92f0260a.tres"
+
+[deps]
+
+source_file="res://dialog/script.dialog"
+dest_files=[ "res://.import/script.dialog-c39567c2383f9a1c95d5f1df92f0260a.tres" ]
+
+[params]
+

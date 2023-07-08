@@ -45,12 +45,14 @@ func get_vsync()->bool:
 	return vsync
 
 func get_textsize():
-	text_size = theme.default_font.size
+	if theme.default_font:
+		text_size = theme.default_font.size
 	return text_size
 
 func set_textsize(val):
 	text_size = val
-	theme.default_font.size = val
+	if theme.default_font:
+		theme.default_font.size = val
 	emit_signal("ui_redraw")
 
 func get_text_color()->Color:

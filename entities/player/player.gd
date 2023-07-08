@@ -5,11 +5,16 @@ enum State {
 	Ground,
 	Jump,
 	Fall,
+	Slide,
 	Locked
 }
 const GRAVITY := Vector3.DOWN*15
 const TERMINAL_VELOCITY := -80.0
 const INPUT_EPSILON := 0.1
+
+const MIN_DOT_FALL := 0.1
+const MIN_DOT_SLIDE := 0.7
+const MIN_DOT_SLIDE_END := 0.8
 
 onready var ground_area:Area = $ground_area
 onready var cam := $cam_rig
@@ -17,6 +22,7 @@ onready var cam := $cam_rig
 var state:int = State.Ground
 var velocity := Vector3.ZERO
 var ground_normal := Vector3.UP
+var best_floor : Node
 
 var accel_start := 45.0
 var accel_continue := 20.0
@@ -48,33 +54,55 @@ func _physics_process(delta):
 		input_buffer[e] += delta
 	if velocity.y < TERMINAL_VELOCITY:
 		velocity.y = TERMINAL_VELOCITY
-	for i in range(timers.size()):
-		timers[i] += delta
+
+	ground_normal = Vector3.DOWN
+	for c in range(get_slide_count()):
+		var col := get_slide_collision(c)
+		var normal := col.normal
+		if normal.y > ground_normal.y:
+			ground_normal = normal
+			best_floor = col.collider as Node
 
 	match state:
 		State.Ground:
 			if pressed("mv_jump"):
 				set_state(State.Jump)
-			elif after(0.1, empty(ground_area)):
+			elif ground_normal.y < 0.5:
+				set_state(State.Slide)
+			elif after(0.1, empty(ground_area), 1):
+				set_state(State.Fall)
+		State.Slide:
+			if after(0.1, ground_normal.y > MIN_DOT_SLIDE_END):
+				set_state(State.Ground)
+			elif after(0.1, empty(ground_area), 1):
 				set_state(State.Fall)
 		State.Fall:
-			if is_on_floor():
-				set_state(State.Ground)
+			if ground_normal.y > MIN_DOT_FALL:
+				if ground_normal.y > MIN_DOT_SLIDE:
+					set_state(State.Ground)
+				else:
+					set_state(State.Slide)
 		State.Jump:
 			if after(0.1):
 				set_state(State.Fall)
 	var movement := Input.get_vector("mv_left", "mv_right", "mv_up", "mv_down")
-	$debug/stats/a2.text = "Input: {%.3f, %.3f}" % [movement.x, movement.y]
+	$ui/modal/debug/stats/a2.text = "Input: {%.3f, %.3f}" % [movement.x, movement.y]
+	$ui/modal/debug/stats/a3.text = "Ground: {%.3f}" % ground_normal.y
 	var desired_velocity: Vector3 = speed_max*(
 		cam.yaw.global_transform.basis.x * movement.x
 		+ cam.yaw.global_transform.basis.z * movement.y)
 	match state:
 		State.Ground:
-			if is_on_floor():
-				ground_normal = get_floor_normal()
 			move(delta, desired_velocity)
+		State.Slide:
+			move_slide(delta, desired_velocity)
 		State.Fall, State.Jump:
 			move_air(delta, desired_velocity)
+	rotate_intention(desired_velocity)
+	
+	for i in range(timers.size()):
+		timers[i] += delta
+
 
 func move(delta:float, desired_velocity: Vector3):
 	var gravity = GRAVITY
@@ -119,7 +147,20 @@ func move(delta:float, desired_velocity: Vector3):
 			vvel = velocity.project(gravity.normalized())
 		velocity =  vvel + hvel + delta*gravity
 
-	velocity = move_and_slide_with_snap(velocity, Vector3.DOWN*0.06125, Vector3.UP)
+	velocity = move_and_slide_with_snap(velocity, Vector3.DOWN*0.06125, Vector3.UP, false, 4, 2.0)
+
+func move_slide(delta: float, desired_velocity:Vector3):
+	if desired_velocity.dot(ground_normal) < 0:
+		desired_velocity = desired_velocity.slide(ground_normal)
+	
+	var hvel := velocity
+	hvel = hvel.move_toward(desired_velocity, accel_continue*delta)
+	
+	velocity = Vector3(
+		hvel.x,
+		min(hvel.y, velocity.y),
+		hvel.z)
+	velocity = move_and_slide(velocity + delta*GRAVITY, Vector3.UP, false, 4, 2.0)
 
 func move_air(delta:float, desired_velocity:Vector3):
 	var hvel := Vector3(velocity.x, 0, velocity.z).move_toward(desired_velocity, accel_continue)
@@ -128,9 +169,20 @@ func move_air(delta:float, desired_velocity:Vector3):
 	velocity += GRAVITY*delta
 	var pre_slide_vel := velocity
 	velocity = move_and_slide(velocity, Vector3.UP)
+	var ceiling_normal := Vector3.UP
+	for i in get_slide_count():
+		var c := get_slide_collision(i)
+		if c.normal.y < ceiling_normal.y:
+			ceiling_normal = c.normal
+	if ceiling_normal.y > -0.9:
+		if pre_slide_vel.y <= 0:
+			velocity.y = clamp(velocity.y, pre_slide_vel.y, 0.0)
+		else:
+			velocity.y = max(velocity.y, pre_slide_vel.y)
 
 func set_state(new_state):
-	$debug/stats/a1.text = "State: " + State.keys()[new_state]
+	#print(State.keys()[state], " -> ", State.keys()[new_state])
+	$ui/modal/debug/stats/a1.text = "State: " + State.keys()[new_state]
 	match new_state:
 		State.Ground:
 			accel_start = 45.0
@@ -143,9 +195,25 @@ func set_state(new_state):
 		State.Jump:
 			velocity += Vector3.UP*7.0
 			accel_continue = 200.0
+		State.Slide:
+			accel_continue = 30.0
 		State.Locked:
 			pass
 	state = new_state
+
+	var i = 0
+	while i < timers.size():
+		timers[i] = 0.0
+		i += 1
+
+# Visual methods
+func rotate_intention(direction:Vector3):
+	if direction == Vector3.ZERO:
+		return
+	var up := Vector3.UP
+	var forward := direction.normalized()
+	var right = up.cross(forward)
+	$intention.global_transform.basis = Basis(right, up, forward)
 
 # State Methods
 func after(time: float, condition := true, id := 0):

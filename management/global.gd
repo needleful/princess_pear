@@ -36,6 +36,10 @@ func _input(event):
 	if ogg != using_gamepad:
 		get_tree().call_group("input_prompt", "_refresh")
 
+func change_level_to(scene: PackedScene):
+	set_stat("level", scene.resource_path)
+	return get_tree().change_scene_to(scene)
+
 func get_mouse_zoom_axis() -> float:
 	return 15*( float(Input.is_action_just_released("mouse_zoom_in"))
 			- float(Input.is_action_just_released("mouse_zoom_out")) )
@@ -216,15 +220,13 @@ func save_checkpoint(pos: Transform, sleeping := false):
 func save_game():
 	save_async()
 
-func load_sync(reload := true):
+func load_sync():
 	print("loading save")
 	if save_thread.is_active():
 		save_thread.wait_to_finish()
 	if ResourceLoader.exists(save_path):
 		game_state = ResourceLoader.load(save_path, "", true)
 		valid_game_state = true
-		if reload:
-			var _x = get_tree().reload_current_scene()
 	else:
 		print_debug("Tried to load with no save at ", save_path)
 		valid_game_state = false

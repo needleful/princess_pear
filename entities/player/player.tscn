@@ -1,8 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://entities/player/player.gd" type="Script" id=1]
 [ext_resource path="res://entities/player/cam_rig.gd" type="Script" id=2]
 [ext_resource path="res://visuals/materials/main_spatial.shader" type="Shader" id=3]
+[ext_resource path="res://ui/components/screen_aspect.gd" type="Script" id=4]
+[ext_resource path="res://ui/player_ui.gd" type="Script" id=5]
+[ext_resource path="res://ui/pause_menu/pause_menu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ui/default_theme.tres" type="Theme" id=7]
 
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 3 )
@@ -23,6 +27,11 @@ radius = 0.2
 
 [sub_resource type="SphereShape" id=5]
 radius = 0.5
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 0.537062, 1, 0.945753 )
+
+[sub_resource type="PrismMesh" id=7]
 
 [node name="player" type="KinematicBody" groups=["player"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -63,31 +72,69 @@ collision_layer = 0
 [node name="CollisionShape" type="CollisionShape" parent="ground_area"]
 shape = SubResource( 5 )
 
-[node name="debug" type="PanelContainer" parent="."]
+[node name="intention" type="Spatial" parent="."]
+
+[node name="interact" type="Area" parent="intention"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape" type="CollisionShape" parent="intention/interact"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.536467 )
+shape = SubResource( 6 )
+
+[node name="MeshInstance" type="MeshInstance" parent="intention"]
+transform = Transform( 0.098063, 0, 0, 0, -5.75437e-09, -0.131645, 0, 0.177136, -7.74287e-09, 0, 0.970113, 0.615948 )
+mesh = SubResource( 7 )
+
+[node name="ui" type="AspectRatioContainer" parent="."]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 7 )
+ratio = 1.7778
+script = ExtResource( 4 )
+
+[node name="modal" type="Control" parent="ui"]
+margin_top = 12.0036
+margin_right = 1024.0
+margin_bottom = 587.996
+script = ExtResource( 5 )
+
+[node name="debug" type="PanelContainer" parent="ui/modal"]
 margin_right = 258.0
 margin_bottom = 210.0
 
-[node name="stats" type="VBoxContainer" parent="debug"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 251.0
-margin_bottom = 203.0
+[node name="stats" type="VBoxContainer" parent="ui/modal/debug"]
+margin_right = 258.0
+margin_bottom = 210.0
 
-[node name="a1" type="Label" parent="debug/stats"]
-margin_right = 244.0
+[node name="a1" type="Label" parent="ui/modal/debug/stats"]
+margin_right = 258.0
 margin_bottom = 14.0
 
-[node name="a2" type="Label" parent="debug/stats"]
+[node name="a2" type="Label" parent="ui/modal/debug/stats"]
 margin_top = 18.0
-margin_right = 244.0
+margin_right = 258.0
 margin_bottom = 32.0
 
-[node name="a3" type="Label" parent="debug/stats"]
+[node name="a3" type="Label" parent="ui/modal/debug/stats"]
 margin_top = 36.0
-margin_right = 244.0
+margin_right = 258.0
 margin_bottom = 50.0
 
-[node name="a4" type="Label" parent="debug/stats"]
+[node name="a4" type="Label" parent="ui/modal/debug/stats"]
 margin_top = 54.0
-margin_right = 244.0
+margin_right = 258.0
 margin_bottom = 68.0
+
+[node name="pause_menu" parent="ui/modal" instance=ExtResource( 6 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -161.5
+margin_top = -213.0
+margin_right = 161.5
+margin_bottom = 213.0
+
+[connection signal="exit" from="ui/modal/pause_menu" to="ui/modal" method="unpause"]

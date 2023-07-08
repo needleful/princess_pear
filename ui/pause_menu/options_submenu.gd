@@ -1,6 +1,7 @@
 extends Control
 
 signal ui_redraw
+# warning-ignore:unused_signal
 signal back_pressed
 
 export(String) var menu_name := ""
@@ -26,6 +27,10 @@ var custom_widgets:Dictionary
 func _init():
 	var _x = r_enum_hint.compile("(\\w\\S*:\\d+,?)+")
 
+func set_active(a):
+	if a:
+		generate()
+
 func generate():
 	if menu_name == "":
 		menu_name = name
@@ -48,6 +53,7 @@ func redraw():
 		back.text = tr("Back")
 		add_child(back)
 		var _x = back.connect("pressed", self, "emit_signal", ["back_pressed"])
+	get_child(0).grab_focus()
 
 func create_widget(property:Dictionary)->void:
 	var type = property.type

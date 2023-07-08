@@ -1,0 +1,94 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ui/default_theme.tres" type="Theme" id=1]
+[ext_resource path="res://ui/components/modal.gd" type="Script" id=3]
+[ext_resource path="res://ui/pause_menu/options_menu.gd" type="Script" id=4]
+[ext_resource path="res://ui/pause_menu/options_submenu.gd" type="Script" id=5]
+
+[node name="pause_menu" type="PanelContainer"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="foreground" type="MarginContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 20
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 20
+script = ExtResource( 3 )
+
+[node name="main_menu" type="VBoxContainer" parent="foreground"]
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 1014.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 250, 0 )
+custom_constants/separation = 40
+
+[node name="resume" type="Button" parent="foreground/main_menu"]
+margin_right = 1004.0
+margin_bottom = 20.0
+text = "Resume"
+
+[node name="reload" type="Button" parent="foreground/main_menu"]
+visible = false
+margin_top = 68.0
+margin_right = 250.0
+margin_bottom = 96.0
+text = "Return to Checkpoint"
+
+[node name="options" type="Button" parent="foreground/main_menu"]
+margin_top = 60.0
+margin_right = 1004.0
+margin_bottom = 80.0
+text = "Options"
+
+[node name="quit" type="Button" parent="foreground/main_menu"]
+margin_top = 120.0
+margin_right = 1004.0
+margin_bottom = 140.0
+text = "Save and Quit"
+
+[node name="options_panel" type="VBoxContainer" parent="foreground"]
+visible = false
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 1014.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 250, 0 )
+custom_constants/separation = 40
+
+[node name="button_template" type="Button" parent="foreground/options_panel"]
+margin_right = 944.0
+margin_bottom = 20.0
+text = "Audio"
+
+[node name="back" type="Button" parent="foreground/options_panel"]
+margin_top = 60.0
+margin_right = 944.0
+margin_bottom = 80.0
+text = "Back"
+
+[node name="options_template" type="VBoxContainer" parent="foreground"]
+visible = false
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 1014.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 400, 0 )
+size_flags_horizontal = 3
+custom_constants/separation = 40
+script = ExtResource( 5 )
+menu_name = "<Invalid>"
+
+[connection signal="pressed" from="foreground/main_menu/resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="foreground/main_menu/reload" to="." method="_on_reload_pressed"]
+[connection signal="pressed" from="foreground/main_menu/options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="foreground/main_menu/quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="foreground/options_panel/back" to="." method="_on_back_pressed"]
+[connection signal="back_pressed" from="foreground/options_template" to="." method="_on_options_back_pressed"]
+[connection signal="ui_redraw" from="foreground/options_template" to="." method="_on_ui_redraw"]

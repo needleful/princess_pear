@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://visuals/materials/triplanar_local_coords.shader" type="Shader" id=2]
+[ext_resource path="res://levels/level.gd" type="Script" id=3]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )
@@ -11,7 +12,12 @@ shader_param/softness = 0.5
 shader_param/specularity = 1.0
 shader_param/light_bias = 0.0
 
+[sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="BoxShape" id=3]
+
 [node name="intro" type="Spatial"]
+script = ExtResource( 3 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98299, 0 )
@@ -23,6 +29,33 @@ width = 33.7467
 depth = 34.3187
 material = SubResource( 1 )
 
+[node name="CSGBox2" type="CSGBox" parent="."]
+transform = Transform( 0.93573, -0.124682, 0.329946, 0, 0.935438, 0.353491, -0.352718, -0.330772, 0.875317, 0, 0, 5.78812 )
+use_collision = true
+collision_layer = 257
+width = 33.7467
+depth = 34.3187
+material = SubResource( 1 )
+
+[node name="CSGBox3" type="CSGBox" parent="."]
+transform = Transform( 0.748319, -0.454421, 0.483239, -0.132614, 0.611303, 0.780207, -0.649947, -0.647928, 0.397187, 11.2635, 0, 4.90967 )
+use_collision = true
+collision_layer = 257
+width = 33.7467
+depth = 34.3187
+material = SubResource( 1 )
+
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.744734, -0.448656, 0.494043, -0.667361, -0.500672, 0.551322, 0, -0.740294, -0.672283, 0, 0, 0 )
+light_color = Color( 0.988235, 0.976471, 0.937255, 1 )
 shadow_enabled = true
+
+[node name="KinematicBody" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.20747, 1.71337, 0.246409 )
+collision_layer = 5
+
+[node name="MeshInstance" type="MeshInstance" parent="KinematicBody"]
+mesh = SubResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
+shape = SubResource( 3 )
