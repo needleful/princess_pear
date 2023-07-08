@@ -1,0 +1,76 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://levels/part_dark_spire.tscn" type="PackedScene" id=1]
+[ext_resource path="res://levels/level.gd" type="Script" id=2]
+[ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=4]
+[ext_resource path="res://dialog/script.dialog" type="Resource" id=5]
+[ext_resource path="res://levels/props/viewfinder.tscn" type="PackedScene" id=6]
+
+[sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.423529, 0.47451, 0.898039, 1 )
+
+[sub_resource type="BoxShape" id=3]
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 1, 1, 1.16504 )
+
+[sub_resource type="CylinderShape" id=6]
+radius = 0.547964
+
+[sub_resource type="Environment" id=7]
+ambient_light_color = Color( 0.47451, 0.14902, 0.564706, 1 )
+indirect_light_color = Color( 0.627451, 0.647059, 0.764706, 1 )
+
+[node name="dark_spire" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="player" parent="." index="2" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5509, 11.279, -10.0327 )
+
+[node name="makau" type="KinematicBody" parent="." index="3"]
+transform = Transform( 0.814387, 0, -0.580322, 0, 1, 0, 0.580322, 0, 0.814387, 38.5776, 11.1971, -18.0967 )
+
+[node name="MeshInstance" type="MeshInstance" parent="makau" index="0"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="makau" index="1"]
+shape = SubResource( 3 )
+
+[node name="dialog" type="KinematicBody" parent="makau" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 4 )
+sequence = ExtResource( 5 )
+friendly_id = "makau"
+custom_entry = "makau_tour"
+
+[node name="CollisionShape" type="CollisionShape" parent="makau/dialog" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
+shape = SubResource( 4 )
+
+[node name="viewfinder" parent="." index="4" instance=ExtResource( 6 )]
+transform = Transform( -0.0415137, 0, 0.999138, 0, 1, 0, -0.999138, 0, -0.0415137, 4.0557, 115.201, 78.4519 )
+
+[node name="StaticBody" type="StaticBody" parent="viewfinder" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.09663, 0 )
+script = ExtResource( 4 )
+sequence = ExtResource( 5 )
+custom_entry = "item_viewfinder"
+
+[node name="CollisionShape" type="CollisionShape" parent="viewfinder/StaticBody" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.07552, 0 )
+shape = SubResource( 6 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="6"]
+transform = Transform( -0.509278, -0.519191, -0.686351, -0.477733, -0.492805, 0.727265, -0.715826, 0.698272, 0.00294002, 0, 35.7057, 0 )
+directional_shadow_split_1 = 0.08
+directional_shadow_split_2 = 0.16
+directional_shadow_max_distance = 200.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="7"]
+environment = SubResource( 7 )

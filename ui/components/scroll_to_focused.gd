@@ -2,7 +2,7 @@ extends ScrollContainer
 
 export(NodePath) var container_path
 export(bool) var accept_input := false
-onready var container := get_node(container_path) as Container
+onready var container := get_node(container_path) as Control
 var active_tween : SceneTreeTween
 var scroll_speed := 1200.0
 

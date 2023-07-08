@@ -9,4 +9,4 @@ export(Dictionary) var custom_fonts
 export(Dictionary) var custom_colors
 
 func interact(player: PlayerBody):
-	player.ui.start_dialog(self)
+	player.ui.start_dialog(self, get_parent())

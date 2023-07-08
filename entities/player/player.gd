@@ -21,6 +21,7 @@ onready var cam := $cam_rig
 onready var interact := $intention/interact
 onready var indicator := $free_nodes/interact
 onready var ui := $ui/modal
+onready var mesh := $princess
 
 var state:int = State.Ground
 var velocity := Vector3.ZERO
@@ -35,6 +36,7 @@ var decel_with := 10.0
 
 var speed_low := 2.0
 var speed_max := 7.0
+const VIS_SPEED := 5.0
 
 var timers := PoolRealArray()
 var input_buffer := {
@@ -59,6 +61,9 @@ func _input(event):
 func _ready():
 	set_state(state)
 	cam.reset()
+	if Global.valid_game_state and !Global.switching_scenes:
+		global_transform = Global.game_state.checkpoint_position
+	Global.switching_scenes = false
 
 func _physics_process(delta):
 	for e in input_buffer.keys():
@@ -82,6 +87,9 @@ func _physics_process(delta):
 				set_state(State.Slide)
 			elif after(0.1, empty(ground_area), 1):
 				set_state(State.Fall)
+			var hvel := velocity
+			hvel.y = 0
+			mesh.blend_walk(hvel.length()/VIS_SPEED)
 		State.Slide:
 			if after(0.1, ground_normal.y > MIN_DOT_SLIDE_END):
 				set_state(State.Ground)
@@ -111,6 +119,9 @@ func _physics_process(delta):
 			move_air(delta, desired_velocity)
 	rotate_intention(desired_velocity)
 	
+	if velocity.length_squared() > 0.01:
+		rotate_mesh(velocity)
+
 	for i in range(timers.size()):
 		timers[i] += delta
 
@@ -218,13 +229,29 @@ func set_state(new_state):
 		State.Slide:
 			accel_continue = 30.0
 		State.Locked:
-			pass
+			mesh.blend_walk(0)
 	state = new_state
-
+	
+	if state == State.Locked:
+		mesh.play_state("Ground")
+	else:
+		mesh.play_state(State.keys()[state])
 	var i = 0
 	while i < timers.size():
 		timers[i] = 0.0
 		i += 1
+
+func rotate_mesh(dir:Vector3):
+	dir.y = 0
+	dir = dir.normalized()
+	if !dir.is_normalized():
+		return
+	var f:Vector3 = mesh.global_transform.basis.z
+	var axis := f.cross(dir).normalized()
+	if !axis.is_normalized():
+		return
+	var angle = f.angle_to(dir)
+	mesh.global_rotate(axis, angle)
 
 # Visual methods
 func rotate_intention(direction:Vector3):
@@ -282,3 +309,6 @@ func is_locked() -> bool:
 
 func get_fade_animation():
 	return get_node("fade_to_black/AnimationPlayer")
+
+func prepare_save():
+	Global.game_state.checkpoint_position = global_transform

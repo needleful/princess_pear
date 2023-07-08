@@ -166,25 +166,35 @@ You -- Hey, where are you going?
 [exit]
 
 :guard_intro
-Castle Guard -- Halt! Who goes there?
-You -- I'm Princess Pear of the Garden Kingdom, Lord Gizzard requested my audience.
-Castle Guard -- I'll be the judge of that! Present your invitation and then you may enter.
-[mention: guard_letter]
-* (Hint: use your bag to select an item in conversation!)
-You -- Why do I need to use 
+{local_talked == 0}
+	Halt! Who goes there?
+	You -- I'm Princess Pear of the Garden Kingdom, Lord Gizzard requested my audience.
+	I'll be the judge of that! Present your invitation and then you may enter.
+	[mention: guard_letter]
+	* (Hint: use an item in conversation!)
+	You -- Really now, you don't recognize me?
+		Your Lord Gizzard invites me to his castle in the most rude fashion, and then I get hassled by guards to present my invitation like I'm some riffraff from the street!
+	No invitation, no entry.
+	You -- Humph! Well maybe I don't want in, anyway!
+{otherwise}
+	Do you have your invitation now? Have you got it all out of your system.
+	* (Hint: use an item in conversation!)
+	You -- Perhaps I have...
+		...
+		Actually, no! I haven't! Quite frankly, I'm not going to invite Lord Gizzard to my next dinner with how rude he and his court have been so far.
 [exit]
 
 :item(invitation) :- mentioned("guard_letter")
 [event: invitation]
 * You hand him the letter.
-Castle Guard -- Curdled ink... fouled paper, and the official Gizzard letterhead.
+Curdled ink... fouled paper, and the official Gizzard letterhead.
 	Welcome to the Dark Spire, princess...
 [exit_event: next_level]
 
 :item(invitation) :- entered_from == "guard_intro"
 [event: invitation_sassy]
 You -- Tell Lord Gizzard I've arrived.
-Castle Guard -- Hm... Alright. You can come in.
+Hm... Alright. You can come in.
 [exit_event: next_level]
 
 :makau_tour
@@ -205,3 +215,10 @@ Castle Guard -- Hm... Alright. You can come in.
 	Let's not dally. I'm to show you the might of the Spire, and by extension our Kingdom.
 	Meet me at the fountain!
 	[exit_event: m_walk1]
+[exit]
+
+:item_side_exit
+* Looking out over the ledge, you realized the rocks are close enough to the castle that your men could climb down and use this as a back exit!
+[Global add_item: side_exit]
+* You take note of this.
+[exit]

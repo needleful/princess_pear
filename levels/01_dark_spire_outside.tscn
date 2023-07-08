@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://levels/part_dark_spire.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://levels/level.gd" type="Script" id=3]
 [ext_resource path="res://dialog/script.dialog" type="Resource" id=4]
 [ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=5]
+[ext_resource path="res://levels/02_spire_tour.tscn" type="PackedScene" id=6]
 
 [sub_resource type="CubeMesh" id=2]
 
@@ -28,8 +29,13 @@ extents = Vector3( 0.5, 1, 0.5 )
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 1, 2, 1 )
 
+[sub_resource type="Environment" id=10]
+ambient_light_color = Color( 0.392157, 0.392157, 0.396078, 1 )
+indirect_light_color = Color( 0.54902, 0.321569, 0.321569, 1 )
+
 [node name="dark_spire" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+next_level = ExtResource( 6 )
 
 [node name="player" parent="." index="2" instance=ExtResource( 2 )]
 transform = Transform( -0.0313598, 0, -0.999508, 0, 1, 0, 0.999508, 0, -0.0313598, 195.656, 16.7971, 9.57861 )
@@ -103,7 +109,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
 
 [node name="guard" type="KinematicBody" parent="." index="6"]
-transform = Transform( 0.814387, 0, -0.580322, 0, 1, 0, 0.580322, 0, 0.814387, 70.0992, 11.6668, -5.71429 )
+transform = Transform( 0.814387, 0, -0.580322, 0, 1, 0, 0.580322, 0, 0.814387, 79.3924, 11.3565, -7.69931 )
 
 [node name="MeshInstance" type="MeshInstance" parent="guard" index="0"]
 mesh = SubResource( 2 )
@@ -118,8 +124,8 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource( 5 )
 sequence = ExtResource( 4 )
-friendly_id = "pea_plum_pink"
-custom_entry = "peplupi_intro"
+friendly_id = "castle_guard"
+custom_entry = "guard_intro"
 
 [node name="CollisionShape" type="CollisionShape" parent="guard/dialog" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
@@ -156,3 +162,13 @@ custom_entry = "brothers_intro"
 [node name="CollisionShape" type="CollisionShape" parent="brothers/dialog" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="9"]
+transform = Transform( -0.721727, 0.499615, -0.479056, -0.49852, 0.104947, 0.860502, 0.480195, 0.859867, 0.173325, 123.791, 62.0664, 0 )
+shadow_enabled = true
+directional_shadow_split_1 = 0.05
+directional_shadow_split_2 = 0.1
+directional_shadow_max_distance = 400.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="10"]
+environment = SubResource( 10 )

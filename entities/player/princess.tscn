@@ -1,0 +1,135 @@
+[gd_scene load_steps=32 format=2]
+
+[ext_resource path="res://_glb/characters/princess.glb" type="PackedScene" id=1]
+[ext_resource path="res://entities/player/animator.gd" type="Script" id=2]
+[ext_resource path="res://entities/player/face/eye_normal.png" type="Texture" id=3]
+[ext_resource path="res://visuals/materials/main_transparent.shader" type="Shader" id=4]
+[ext_resource path="res://entities/player/face/mouth_normal.png" type="Texture" id=5]
+[ext_resource path="res://visuals/materials/main_spatial.shader" type="Shader" id=6]
+[ext_resource path="res://entities/player/body.png" type="Texture" id=7]
+
+[sub_resource type="ShaderMaterial" id=29]
+shader = ExtResource( 6 )
+shader_param/subsurface_scattering = 0.5
+shader_param/softness = 0.73
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 7 )
+
+[sub_resource type="ShaderMaterial" id=28]
+shader = ExtResource( 4 )
+shader_param/subsurface_scattering = null
+shader_param/softness = 1.0
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 5 )
+
+[sub_resource type="ShaderMaterial" id=27]
+shader = ExtResource( 4 )
+shader_param/subsurface_scattering = -1.0
+shader_param/softness = 1.0
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 3 )
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "Fall-loop"
+
+[sub_resource type="AnimationNodeAnimation" id=7]
+animation = "Run-loop"
+
+[sub_resource type="AnimationNodeAnimation" id=8]
+animation = "Idle-loop"
+
+[sub_resource type="AnimationNodeTimeScale" id=9]
+
+[sub_resource type="AnimationNodeBlend2" id=10]
+
+[sub_resource type="AnimationNodeBlendTree" id=11]
+graph_offset = Vector2( -569, -9 )
+nodes/Animation/node = SubResource( 8 )
+nodes/Animation/position = Vector2( -400, 100 )
+"nodes/Animation 2/node" = SubResource( 7 )
+"nodes/Animation 2/position" = Vector2( -400, 220 )
+nodes/MoveSpeed/node = SubResource( 9 )
+nodes/MoveSpeed/position = Vector2( 60, 120 )
+nodes/RunBlend/node = SubResource( 10 )
+nodes/RunBlend/position = Vector2( -180, 120 )
+node_connections = [ "output", 0, "MoveSpeed", "MoveSpeed", 0, "RunBlend", "RunBlend", 0, "Animation", "RunBlend", 1, "Animation 2" ]
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "Jump"
+
+[sub_resource type="AnimationNodeAnimation" id=22]
+animation = "Land"
+
+[sub_resource type="AnimationNodeAnimation" id=17]
+animation = "Slide-loop"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+xfade_time = 0.05
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=18]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=20]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=21]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=23]
+switch_mode = 2
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=24]
+switch_mode = 2
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=25]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+
+[sub_resource type="AnimationNodeStateMachine" id=4]
+states/Fall/node = SubResource( 12 )
+states/Fall/position = Vector2( 54, 32 )
+states/Ground/node = SubResource( 11 )
+states/Ground/position = Vector2( 386, 163 )
+states/Jump/node = SubResource( 13 )
+states/Jump/position = Vector2( 54, 163 )
+states/Land/node = SubResource( 22 )
+states/Land/position = Vector2( 220, 101 )
+states/Slide/node = SubResource( 17 )
+states/Slide/position = Vector2( 386, 32 )
+transitions = [ "Ground", "Jump", SubResource( 14 ), "Jump", "Fall", SubResource( 15 ), "Ground", "Slide", SubResource( 18 ), "Slide", "Fall", SubResource( 20 ), "Slide", "Ground", SubResource( 21 ), "Land", "Ground", SubResource( 23 ), "Land", "Slide", SubResource( 24 ), "Fall", "Land", SubResource( 25 ), "Land", "Jump", SubResource( 26 ) ]
+start_node = "Ground"
+graph_offset = Vector2( -219, -53 )
+
+[sub_resource type="AnimationNodeBlendTree" id=5]
+graph_offset = Vector2( -431, 30 )
+nodes/StateMachine/node = SubResource( 4 )
+nodes/StateMachine/position = Vector2( 20, 140 )
+node_connections = [ "output", 0, "StateMachine" ]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=6]
+
+[node name="princess" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="base_mesh" parent="Armature/Skeleton" index="0"]
+material/0 = SubResource( 29 )
+material/1 = SubResource( 28 )
+material/2 = SubResource( 27 )
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource( 5 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/StateMachine/playback = SubResource( 6 )
+parameters/StateMachine/Ground/MoveSpeed/scale = 1.0
+parameters/StateMachine/Ground/RunBlend/blend_amount = 0

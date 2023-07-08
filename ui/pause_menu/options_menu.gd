@@ -8,9 +8,16 @@ func _ready():
 	generate_menus()
 	hide()
 
+func _input(event):
+	if is_visible_in_tree() and event is InputEventMouseMotion:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 func back():
 	if modal.mode == 0:
 		emit_signal("exit")
+	elif modal.mode == 3:
+		modal.mode = 0
+		modal.get_child(modal.mode).get_child(0).grab_focus()
 	else:
 		modal.mode -= 1
 		modal.get_child(modal.mode).get_child(0).grab_focus()
@@ -70,6 +77,8 @@ func _on_new_game_pressed():
 
 func _on_delete_pressed():
 	Global.reset_game()
+	emit_signal("exit")
 
 func _on_cancel_pressed():
-	back()
+	modal.mode = 0
+	modal.get_child(modal.mode).get_child(0).grab_focus()

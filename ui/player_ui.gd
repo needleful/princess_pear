@@ -24,17 +24,19 @@ func pause():
 	set_mode(Mode.Pause)
 
 func unpause():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	get_tree().paused = false
 	set_mode(mode_before_pause)
 
-func start_dialog(speaker):
+func start_dialog(speaker, main_node):
 	var p := Global.get_player()
 	if p:
 		p.dialog_lock()
 	set_mode(Mode.Dialog)
-	$dialog/viewer.start(speaker, speaker.sequence, speaker, speaker.custom_entry)
+	$dialog/viewer.start(speaker, speaker.sequence, main_node, speaker.custom_entry)
 
 func end_dialog():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	var p := Global.get_player()
 	if p:
 		p.unlock()

@@ -15,6 +15,7 @@ const old_save_backup := "user://autosave.backup.tres"
 var valid_game_state := false setget set_valid_game_state, get_valid_game_state
 var player_spawned := false
 var can_pause := true
+var switching_scenes := false
 
 var save_thread := Thread.new()
 var player : Node
@@ -39,6 +40,7 @@ func _input(event):
 		get_tree().call_group("input_prompt", "_refresh")
 
 func change_level_to(scene: PackedScene):
+	switching_scenes = true
 	set_stat("level", scene.resource_path)
 	return get_tree().change_scene_to(scene)
 
@@ -223,7 +225,9 @@ func reset_game():
 		print("Backing up save...")
 		# copy as a backup
 		var _x = dir.rename(save_path, old_save_backup)
-	var _x = get_tree().change_scene("res://levels/00_intro.tscn")
+	var res = get_tree().change_scene("res://levels/_init.tscn")
+	if res != OK:
+		print_debug("could not go back to starting scene!")
 
 func save_checkpoint(pos: Transform, sleeping := false):
 	set_stat("player_sleeping", sleeping)
