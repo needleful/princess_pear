@@ -18,6 +18,9 @@ const MIN_DOT_SLIDE_END := 0.8
 
 onready var ground_area:Area = $ground_area
 onready var cam := $cam_rig
+onready var interact := $intention/interact
+onready var indicator := $free_nodes/interact
+onready var ui := $ui/modal
 
 var state:int = State.Ground
 var velocity := Vector3.ZERO
@@ -45,6 +48,13 @@ func _input(event):
 	if state != State.Locked:
 		if event.is_action_pressed("aim_toggle"):
 			cam.set_aiming(!cam.aiming)
+		elif event.is_action_pressed("interact"):
+			if !empty(interact):
+				var b = interact.get_overlapping_bodies()[0]
+				if b.has_method("interact"):
+					b.interact(self)
+				else:
+					print_debug("Tried to interact with non-interactible: ", b.get_path())
 
 func _ready():
 	set_state(state)
@@ -103,6 +113,12 @@ func _physics_process(delta):
 	for i in range(timers.size()):
 		timers[i] += delta
 
+func _process(_delta):
+	if !is_locked() and !empty(interact):
+		indicator.show()
+		indicator.global_transform.origin = interact.get_overlapping_bodies()[0].global_transform.origin
+	else:
+		indicator.hide()
 
 func move(delta:float, desired_velocity: Vector3):
 	var gravity = GRAVITY
@@ -242,10 +258,16 @@ func empty(area: Area):
 	return area.get_overlapping_bodies().size() == 0
 	
 # Public API
+func dialog_lock():
+	cam.start_dialog()
+	set_state(State.Locked)
+
 func lock():
 	set_state(State.Locked)
 
 func unlock():
+	if cam.dialog_locked:
+		cam.end_dialog()
 	set_state(State.Ground)
 
 func is_grounded() -> bool:

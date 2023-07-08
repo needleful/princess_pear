@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://visuals/materials/triplanar_local_coords.shader" type="Shader" id=2]
 [ext_resource path="res://levels/level.gd" type="Script" id=3]
+[ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=4]
+[ext_resource path="res://dialog/script.dialog" type="Resource" id=5]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )
@@ -15,6 +17,9 @@ shader_param/light_bias = 0.0
 [sub_resource type="CubeMesh" id=2]
 
 [sub_resource type="BoxShape" id=3]
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 1, 1, 1.16504 )
 
 [node name="intro" type="Spatial"]
 script = ExtResource( 3 )
@@ -52,10 +57,22 @@ shadow_enabled = true
 
 [node name="KinematicBody" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.20747, 1.71337, 0.246409 )
-collision_layer = 5
 
 [node name="MeshInstance" type="MeshInstance" parent="KinematicBody"]
 mesh = SubResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
 shape = SubResource( 3 )
+
+[node name="dialog" type="KinematicBody" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 4 )
+sequence = ExtResource( 5 )
+visual_name = "Pea Pie Po"
+custom_entry = "start"
+
+[node name="CollisionShape" type="CollisionShape" parent="KinematicBody/dialog"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
+shape = SubResource( 4 )

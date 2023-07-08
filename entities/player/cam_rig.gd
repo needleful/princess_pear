@@ -21,12 +21,12 @@ const SIT_DROP := 0.75
 const SPRING_DEFAULT := 5.0
 const SPRING_AIM := 3.0
 const SPRING_AIM_CLOSE := 0.9
-const SPRING_DIALOG := 1.5
+const SPRING_DIALOG := 2.5
 const SPRING_CLOSE := 1.2
-const ANGLE_DEFAULT := Vector3(-15, 0, 0)
+const ANGLE_DEFAULT := Vector3(-6, 0, 0)
 const ANGLE_AIM := Vector3(-10, -20, 0)
 const ANGLE_AIM_CLOSE := Vector3(-10, -45, 0)
-const ANGLE_DIALOG := Vector3(-10, 20, 0)
+const ANGLE_DIALOG := Vector3(-0, 20, 0)
 const ANGLE_CLOSE := Vector3(-20, -15, 0)
 
 const TWEEN_TIME_AIM := 0.4

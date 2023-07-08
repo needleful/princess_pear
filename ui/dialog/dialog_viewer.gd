@@ -9,7 +9,6 @@ signal pick_item
 signal new_contextual_reply
 signal control_screen(controlled)
 
-var shopping := false setget set_shopping
 var entered_from := ""
 
 onready var player: PlayerBody = Global.get_player()
@@ -23,7 +22,8 @@ var sequence: Resource
 export(Dictionary) var fonts: Dictionary
 export(Dictionary) var colors := {
 	"narration": Color.dimgray,
-	"you":Color.deeppink
+	"you":Color.deeppink,
+	"hint":Color.orangered
 }
 
 onready var replies := $messages/replies
@@ -85,7 +85,6 @@ func _input(event):
 
 func start(p_source_node: Node, p_sequence: Resource, speaker: Node = null, starting_label:= ""):
 	emit_signal("started")
-	set_shopping(false)
 	clear()
 	source_node = p_source_node
 	sequence = p_sequence.duplicate()
@@ -194,9 +193,6 @@ func advance():
 			if r is Dictionary:
 				if r == RESULT_END:
 					return
-				elif r == RESULT_PAUSE:
-					pause()
-					return
 				elif r == RESULT_SKIP:
 					advance()
 					return
@@ -304,11 +300,7 @@ func _resize_replies():
 	message_container.scroll_to_end()
 
 func _on_input_timer_timeout():
-	if shopping:
-		if $shop.items_window.get_child_count() >= 3:
-			$shop.items_window.get_child(2).grab_focus()
-	else:
-		replies.get_child(0).grab_focus()
+	replies.get_child(0).grab_focus()
 
 func choose_reply(item: DialogItem, skip: bool):
 	if !skip:
@@ -336,9 +328,6 @@ func use_note(tags:Array):
 
 func use_item(id:String, desc: ItemDescription = null):
 	enable_replies()
-	if id == "coat":
-		trade_coats()
-		return
 	var by_item := _find_item("item", [id], false)
 	if by_item:
 		_call_next(by_item)
@@ -350,8 +339,10 @@ func use_item(id:String, desc: ItemDescription = null):
 		_no_label()
 
 func get_speaker_name() -> String:
-	if "visual_name" in main_speaker:
+	if "visual_name" in main_speaker and main_speaker.visual_name != "":
 		return main_speaker.visual_name
+	elif "friendly_id" in main_speaker and main_speaker.friendly_id != "":
+		return main_speaker.friendly_id.capitalize()
 	else:
 		return main_speaker.name.capitalize()
 
@@ -453,33 +444,17 @@ func fast_exit():
 		current_item = _find_item("_exit")
 		advance()
 
-func pause():
-	print("Pausing dialog...")
-	set_process_input(false)
-
-func resume():
-	set_process_input(true)
-	if advance_on_resume:
-		get_next()
-
 func get_talked_stat():
 	var s: String = speaker_stat()
 	return "talked/" + s
 
 func ui_settings_apply():
-	for f in fonts.values():
-		if f is DynamicFont:
-			f.size = get_theme_default_font().size
-	
-	fonts["default"] = get_theme_default_font()
+	if get_theme_default_font():
+		for f in fonts.values():
+			if f is DynamicFont:
+				f.size = get_theme_default_font().size
+		fonts["default"] = get_theme_default_font()
 	colors["default"] = get_color("font_color", "Label")
-
-func set_shopping(s):
-	shopping = s
-	$messages.visible = !shopping
-	$shop.visible = shopping
-	if shopping:
-		$input_timer.start()
 
 func _on_item_context_cancelled():
 	enable_replies()
@@ -581,16 +556,15 @@ func seconds_since_conversation() -> int:
 func format(style: String):
 	return {"_format":style}
 
-func event(tag: String, should_pause := false, auto_advance_on_resume:= true):
+func event(tag: String):
 	emit_signal("event", tag)
 	emit_signal("event_with_source", tag, main_speaker)
 	if main_speaker.has_method(tag):
 		main_speaker.call(tag)
-	if should_pause:
-		advance_on_resume = auto_advance_on_resume
-		return RESULT_PAUSE
-	else:
-		return true
+
+func exit_event(tag: String):
+	event(tag)
+	return exit()
 
 func goto(label: String):
 	var item := _find_item(label)
@@ -652,23 +626,6 @@ func back():
 		current_item = sequence.canonical_next(caller)
 	return RESULT_SKIP
 
-func coat_trade_stat() -> String:
-	return "coat_trade/" + speaker_stat()
-
-func traded_coats():
-	return Global.stat(coat_trade_stat())
-
-func swap_coats():
-	var _x = Global.add_stat(coat_trade_stat())
-	_x = Global.add_stat("trade_coat")
-	var player_coat: Coat = player.current_coat
-	var speaker_coat: Coat = main_speaker.get_coat()
-	main_speaker.set_coat(player_coat)
-	Global.add_coat(speaker_coat)
-	player.set_current_coat(speaker_coat, true)
-	Global.remove_coat(player_coat)
-	return true
-
 func speaker_stat() -> String:
 	if !main_speaker:
 		return "_NO_SPEAKER_"
@@ -707,11 +664,6 @@ func mark_discussed(stat: String) -> bool:
 	var _x = Global.add_stat("discussed/" + speaker_stat() + "/" + stat)
 	return true
 
-func shop():
-	set_shopping(true)
-	$shop.start_shopping(main_speaker)
-	return true
-
 func remember(note: String, subject: String = ""):
 	if subject == "":
 		subject = speaker_stat()
@@ -733,21 +685,6 @@ func task_is_complete(id):
 
 func stat(s: String):
 	return Global.stat(s)
-
-func playing_game() -> bool:
-	return CustomGames.is_playing(main_speaker.get_parent())
-
-func has_game_stat(sub_stat) -> bool:
-	return CustomGames.has_stat(main_speaker.get_parent(), sub_stat)
-
-func game_stat(sub_stat):
-	return CustomGames.stat(main_speaker.get_parent(), sub_stat)
-
-func game_completed():
-	return CustomGames.completed(main_speaker.get_parent())
-
-func game_start():
-	return main_speaker.get_parent().start()
 
 func control_screen(val := true):
 	emit_signal("control_screen", val)
