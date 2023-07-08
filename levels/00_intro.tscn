@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://visuals/materials/triplanar_local_coords.shader" type="Shader" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/uv_scale = 0.125
+shader_param/power = 5.0
+shader_param/softness = 0.5
+shader_param/specularity = 1.0
+shader_param/light_bias = 0.0
+
+[node name="intro" type="Spatial"]
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98299, 0 )
+
+[node name="CSGBox" type="CSGBox" parent="."]
+use_collision = true
+collision_layer = 257
+width = 33.7467
+depth = 34.3187
+material = SubResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.744734, -0.448656, 0.494043, -0.667361, -0.500672, 0.551322, 0, -0.740294, -0.672283, 0, 0, 0 )
+shadow_enabled = true

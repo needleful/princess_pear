@@ -1,0 +1,179 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Resource",
+"class": "AudioChannel",
+"language": "GDScript",
+"path": "res://addons/fast_options/scripts/audio_channel.gd"
+}, {
+"base": "Object",
+"class": "AudioSettings",
+"language": "GDScript",
+"path": "res://management/settings/audio.gd"
+}, {
+"base": "Node",
+"class": "ControlsSettings",
+"language": "GDScript",
+"path": "res://management/settings/controls.gd"
+}, {
+"base": "Resource",
+"class": "DialogItem",
+"language": "GDScript",
+"path": "res://addons/np_dialog/resource/dialog_item.gd"
+}, {
+"base": "Object",
+"class": "DisplaySettings",
+"language": "GDScript",
+"path": "res://management/settings/display.gd"
+}, {
+"base": "Resource",
+"class": "GameState",
+"language": "GDScript",
+"path": "res://management/game_state.gd"
+}, {
+"base": "Node",
+"class": "GraphicsSettings",
+"language": "GDScript",
+"path": "res://management/settings/graphics.gd"
+}, {
+"base": "Resource",
+"class": "ItemDescription",
+"language": "GDScript",
+"path": "res://ui/resources/item_description.gd"
+}, {
+"base": "KinematicBody",
+"class": "ItemPickup",
+"language": "GDScript",
+"path": "res://entities/items/item_pickup.gd"
+}, {
+"base": "EditorImportPlugin",
+"class": "NPDialogImportPlugin",
+"language": "GDScript",
+"path": "res://addons/np_dialog/dialog_importer.gd"
+}, {
+"base": "Object",
+"class": "NumberToString",
+"language": "GDScript",
+"path": "res://ui/components/number_to_string.gd"
+}, {
+"base": "KinematicBody",
+"class": "PlayerBody",
+"language": "GDScript",
+"path": "res://entities/player/player.gd"
+}, {
+"base": "Reference",
+"class": "Util",
+"language": "GDScript",
+"path": "res://ui/util.gd"
+} ]
+_global_script_class_icons={
+"AudioChannel": "",
+"AudioSettings": "",
+"ControlsSettings": "",
+"DialogItem": "",
+"DisplaySettings": "",
+"GameState": "",
+"GraphicsSettings": "",
+"ItemDescription": "",
+"ItemPickup": "",
+"NPDialogImportPlugin": "",
+"NumberToString": "",
+"PlayerBody": "",
+"Util": ""
+}
+
+[application]
+
+config/name="Princess Pear"
+run/main_scene="res://levels/00_intro.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://management/global.tscn"
+Settings="*res://management/settings.tscn"
+ObjectPool="*res://management/ObjectPool.tscn"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/fast_options/plugin.cfg", "res://addons/np_dialog/plugin.cfg" )
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[input]
+
+cam_up={
+"deadzone": 0.2,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":-1.0,"script":null)
+ ]
+}
+cam_down={
+"deadzone": 0.2,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":1.0,"script":null)
+ ]
+}
+cam_left={
+"deadzone": 0.2,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":-1.0,"script":null)
+ ]
+}
+cam_right={
+"deadzone": 0.2,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":1.0,"script":null)
+ ]
+}
+mv_up={
+"deadzone": 0.2,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":87,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":-1.0,"script":null)
+ ]
+}
+mv_down={
+"deadzone": 0.2,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
+ ]
+}
+mv_left={
+"deadzone": 0.2,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":65,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":-1.0,"script":null)
+ ]
+}
+mv_right={
+"deadzone": 0.2,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":68,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":1.0,"script":null)
+ ]
+}
+mv_jump={
+"deadzone": 0.51,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":1,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
+aim_toggle={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":88,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":9,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
