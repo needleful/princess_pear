@@ -561,6 +561,7 @@ func event(tag: String):
 	emit_signal("event_with_source", tag, main_speaker)
 	if main_speaker.has_method(tag):
 		main_speaker.call(tag)
+	return true
 
 func exit_event(tag: String):
 	event(tag)

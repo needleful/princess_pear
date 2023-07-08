@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://entities/player/player.gd" type="Script" id=1]
 [ext_resource path="res://entities/player/cam_rig.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://ui/pause_menu/pause_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui/default_theme.tres" type="Theme" id=7]
 [ext_resource path="res://ui/dialog/dialog_viewer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ui/fonts/narration_font.tres" type="DynamicFont" id=10]
 
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 3 )
@@ -205,6 +206,12 @@ margin_bottom = -10.0
 grow_horizontal = 0
 rect_min_size = Vector2( 500, 0 )
 fonts = {
+"letter": ExtResource( 10 ),
+"narration": ExtResource( 10 )
+}
+colors = {
+"narration": Color( 0.772549, 0.772549, 0.772549, 1 ),
+"you": Color( 0.47451, 1, 0.505882, 1 )
 }
 
 [node name="free_nodes" type="Node" parent="."]
