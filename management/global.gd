@@ -138,6 +138,17 @@ func set_item_recency(item: String):
 func get_item_recency(item: String):
 	return stat("pick_time/"+item)
 
+func get_fancy_inventory():
+	var path_f := "res://items/%s.tres"
+	var fancy := {}
+	for i in game_state.inventory:
+		var p:String = path_f % i
+		if ResourceLoader.exists(p):
+			var item := load(p) as ItemDescription
+			if item:
+				fancy[p] = item
+	return fancy
+
 func node_stat(node: Node) -> String:
 	 return node.name + "." + str(hash(node.get_path()))
 

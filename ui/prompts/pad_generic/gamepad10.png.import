@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gamepad15.png-8d901242e32ec1aa84911b77a1607f11.stex"
+path="res://.import/gamepad10.png-2de5cbbd23f32b26c62d08e545a36846.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://prompts/pad_generic/gamepad15.png"
-dest_files=[ "res://.import/gamepad15.png-8d901242e32ec1aa84911b77a1607f11.stex" ]
+source_file="res://ui/prompts/pad_generic/gamepad10.png"
+dest_files=[ "res://.import/gamepad10.png-2de5cbbd23f32b26c62d08e545a36846.stex" ]
 
 [params]
 

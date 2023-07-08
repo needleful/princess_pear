@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://entities/player/player.gd" type="Script" id=1]
 [ext_resource path="res://entities/player/cam_rig.gd" type="Script" id=2]
@@ -8,7 +8,9 @@
 [ext_resource path="res://ui/pause_menu/pause_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui/default_theme.tres" type="Theme" id=7]
 [ext_resource path="res://ui/dialog/dialog_viewer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ui/dialog/inventory.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ui/fonts/narration_font.tres" type="DynamicFont" id=10]
+[ext_resource path="res://ui/dialog/dialog.gd" type="Script" id=11]
 
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 3 )
@@ -207,27 +209,29 @@ margin_right = 258.0
 margin_bottom = 210.0
 
 [node name="stats" type="VBoxContainer" parent="ui/modal/debug"]
-margin_right = 258.0
-margin_bottom = 210.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 254.0
+margin_bottom = 206.0
 
 [node name="a1" type="Label" parent="ui/modal/debug/stats"]
-margin_right = 258.0
-margin_bottom = 14.0
+margin_right = 250.0
+margin_bottom = 21.0
 
 [node name="a2" type="Label" parent="ui/modal/debug/stats"]
-margin_top = 18.0
-margin_right = 258.0
-margin_bottom = 32.0
+margin_top = 25.0
+margin_right = 250.0
+margin_bottom = 46.0
 
 [node name="a3" type="Label" parent="ui/modal/debug/stats"]
-margin_top = 36.0
-margin_right = 258.0
-margin_bottom = 50.0
+margin_top = 50.0
+margin_right = 250.0
+margin_bottom = 71.0
 
 [node name="a4" type="Label" parent="ui/modal/debug/stats"]
-margin_top = 54.0
-margin_right = 258.0
-margin_bottom = 68.0
+margin_top = 75.0
+margin_right = 250.0
+margin_bottom = 96.0
 
 [node name="pause_menu" parent="ui/modal" instance=ExtResource( 6 )]
 visible = false
@@ -241,9 +245,9 @@ margin_right = 161.5
 margin_bottom = 213.0
 
 [node name="dialog" type="Control" parent="ui/modal"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 11 )
 
 [node name="viewer" parent="ui/modal/dialog" instance=ExtResource( 8 )]
 anchor_left = 0.7
@@ -262,6 +266,16 @@ colors = {
 "narration": Color( 0.156863, 0.12549, 0.12549, 1 ),
 "you": Color( 0.027451, 0.376471, 0.270588, 1 )
 }
+
+[node name="Inventory" parent="ui/modal/dialog" instance=ExtResource( 9 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -280.0
+margin_top = -197.5
+margin_right = 280.0
+margin_bottom = 197.5
 
 [node name="fade_to_black" type="ColorRect" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -295,3 +309,7 @@ anims/spin = SubResource( 12 )
 
 [connection signal="exit" from="ui/modal/pause_menu" to="ui/modal" method="unpause"]
 [connection signal="exited" from="ui/modal/dialog/viewer" to="ui/modal" method="_on_dialog_exited"]
+[connection signal="pick_item" from="ui/modal/dialog/viewer" to="ui/modal/dialog/Inventory" method="show"]
+[connection signal="started" from="ui/modal/dialog/viewer" to="ui/modal/dialog/Inventory" method="hide"]
+[connection signal="cancelled" from="ui/modal/dialog/Inventory" to="ui/modal/dialog/viewer" method="_on_item_context_cancelled"]
+[connection signal="item_pressed" from="ui/modal/dialog/Inventory" to="ui/modal/dialog/viewer" method="use_item"]

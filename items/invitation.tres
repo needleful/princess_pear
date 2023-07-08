@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://ui/resources/item_description.gd" type="Script" id=1]
+[ext_resource path="res://items/icons/invitation.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+id = "invitation"
+full_name = "Lord Gizzard's Letter"
+custom_icon = ExtResource( 2 )
+description = "\"Princess Pear,
+\"The mighty Lord Gizzard invites you and your court to a negotiation/tennis tournament/go-kart racing weekend at the Dark Spire, in the heart of the Kingdom of Mischief.
+\"There shall be a banquet on the first day, filled with whatever disgusting sugary treats you people call food.
+\"Cross that off, she'd take offense to that. Filled with cakes, sweets, et cetera.
+\"Also, if you don't come I'm going to declare war on your kingdom.
+\"From,
+\"Lord Gizzard
+\"Dictated but not read.\""
+tags = [  ]

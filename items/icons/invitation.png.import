@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gamepad4.png-e2059bb76a9d9da4413c29553dceefe4.stex"
+path="res://.import/invitation.png-ff1e4c2620d73c90af27148a3134e0db.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://prompts/pad_generic/gamepad4.png"
-dest_files=[ "res://.import/gamepad4.png-e2059bb76a9d9da4413c29553dceefe4.stex" ]
+source_file="res://items/icons/invitation.png"
+dest_files=[ "res://.import/invitation.png-ff1e4c2620d73c90af27148a3134e0db.stex" ]
 
 [params]
 

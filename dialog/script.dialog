@@ -148,7 +148,7 @@ You -- Oh, a letter? Let's see: [event: open_letter]
 :item(invitation) :- mentioned("ppp_letter")
 You -- Here it is!
 Pea Plum Pink -- Excellent! We'll need that to gain entry.
-[goto: loop]
+[goto: ppp_loop]
 
 :frank_intro
 Hey.
@@ -172,6 +172,7 @@ Castle Guard -- I'll be the judge of that! Present your invitation and then you 
 [mention: guard_letter]
 * (Hint: use your bag to select an item in conversation!)
 You -- Why do I need to use 
+[exit]
 
 :item(invitation) :- mentioned("guard_letter")
 [event: invitation]

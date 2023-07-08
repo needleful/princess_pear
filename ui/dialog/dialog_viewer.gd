@@ -325,13 +325,13 @@ func use_note(tags:Array):
 	else:
 		_no_label()
 
-func use_item(id:String, desc: ItemDescription = null):
+func use_item(item: ItemDescription):
 	enable_replies()
-	var by_item := _find_item("item", [id], false)
+	var by_item := _find_item("item", [item.id], false)
 	if by_item:
 		_call_next(by_item)
 		return
-	var by_tag := _find_item("item", desc.tags if desc else [], true)
+	var by_tag := _find_item("item", item.tags, true)
 	if by_tag:
 		_call_next(by_tag)
 	else:
@@ -501,7 +501,7 @@ func _find_item(type:String, items = null, fallthrough : bool = true) -> DialogI
 		if items:
 			var found := false
 			for item in items:
-				if l.begins_with("%s(%s)") % [type, item]:
+				if l.begins_with("%s(%s)" % [type, item]):
 					found = true
 					break
 			if !found:

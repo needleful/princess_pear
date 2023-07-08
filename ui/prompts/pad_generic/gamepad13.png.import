@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mouse2.png-a63da18c88085f26439266686cb0dae1.stex"
+path="res://.import/gamepad13.png-4773386360bb034d2770704f6ef0b963.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://prompts/keyboard/mouse2.png"
-dest_files=[ "res://.import/mouse2.png-a63da18c88085f26439266686cb0dae1.stex" ]
+source_file="res://ui/prompts/pad_generic/gamepad13.png"
+dest_files=[ "res://.import/gamepad13.png-4773386360bb034d2770704f6ef0b963.stex" ]
 
 [params]
 

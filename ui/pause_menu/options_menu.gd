@@ -63,3 +63,13 @@ func _on_back_pressed():
 func _on_options_back_pressed():
 	modal.mode = 1
 	$foreground/options_panel.get_child(0).grab_focus()
+
+func _on_new_game_pressed():
+	modal.mode = 3
+	$foreground/new_game/cancel.grab_focus()
+
+func _on_delete_pressed():
+	Global.reset_game()
+
+func _on_cancel_pressed():
+	back()

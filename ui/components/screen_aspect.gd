@@ -6,6 +6,7 @@ export(float) var min_aspect_ratio := 0.0
 func _ready():
 	var _x = get_viewport().connect("size_changed", self, "_on_size_changed")
 	_on_size_changed()
+	$modal.mode = 0
 
 func _on_size_changed():
 	var s := OS.window_size

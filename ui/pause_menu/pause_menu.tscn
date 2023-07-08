@@ -13,8 +13,10 @@ theme = ExtResource( 1 )
 script = ExtResource( 4 )
 
 [node name="foreground" type="MarginContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 1020.0
+margin_bottom = 596.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 20
 custom_constants/margin_left = 10
@@ -24,14 +26,14 @@ script = ExtResource( 3 )
 [node name="main_menu" type="VBoxContainer" parent="foreground"]
 margin_left = 10.0
 margin_top = 20.0
-margin_right = 1014.0
-margin_bottom = 580.0
+margin_right = 1006.0
+margin_bottom = 572.0
 rect_min_size = Vector2( 250, 0 )
 custom_constants/separation = 40
 
 [node name="resume" type="Button" parent="foreground/main_menu"]
-margin_right = 1004.0
-margin_bottom = 20.0
+margin_right = 996.0
+margin_bottom = 29.0
 text = "Resume"
 
 [node name="reload" type="Button" parent="foreground/main_menu"]
@@ -42,23 +44,29 @@ margin_bottom = 96.0
 text = "Return to Checkpoint"
 
 [node name="options" type="Button" parent="foreground/main_menu"]
-margin_top = 60.0
-margin_right = 1004.0
-margin_bottom = 80.0
+margin_top = 69.0
+margin_right = 996.0
+margin_bottom = 98.0
 text = "Options"
 
+[node name="new_game" type="Button" parent="foreground/main_menu"]
+margin_top = 138.0
+margin_right = 996.0
+margin_bottom = 167.0
+text = "Start New Game"
+
 [node name="quit" type="Button" parent="foreground/main_menu"]
-margin_top = 120.0
-margin_right = 1004.0
-margin_bottom = 140.0
+margin_top = 207.0
+margin_right = 996.0
+margin_bottom = 236.0
 text = "Save and Quit"
 
 [node name="options_panel" type="VBoxContainer" parent="foreground"]
 visible = false
 margin_left = 10.0
 margin_top = 20.0
-margin_right = 1014.0
-margin_bottom = 580.0
+margin_right = 1006.0
+margin_bottom = 572.0
 rect_min_size = Vector2( 250, 0 )
 custom_constants/separation = 40
 
@@ -77,18 +85,46 @@ text = "Back"
 visible = false
 margin_left = 10.0
 margin_top = 20.0
-margin_right = 1014.0
-margin_bottom = 580.0
+margin_right = 1006.0
+margin_bottom = 572.0
 rect_min_size = Vector2( 400, 0 )
 size_flags_horizontal = 3
 custom_constants/separation = 40
 script = ExtResource( 5 )
 menu_name = "<Invalid>"
 
+[node name="new_game" type="VBoxContainer" parent="foreground"]
+visible = false
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 1006.0
+margin_bottom = 572.0
+
+[node name="Label" type="Label" parent="foreground/new_game"]
+margin_right = 996.0
+margin_bottom = 21.0
+text = "Are you sure you want to create a new game? This will delete your save."
+autowrap = true
+
+[node name="delete" type="Button" parent="foreground/new_game"]
+margin_top = 25.0
+margin_right = 996.0
+margin_bottom = 54.0
+text = "Delete the game!!!!"
+
+[node name="cancel" type="Button" parent="foreground/new_game"]
+margin_top = 58.0
+margin_right = 996.0
+margin_bottom = 87.0
+text = "Back"
+
 [connection signal="pressed" from="foreground/main_menu/resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="foreground/main_menu/reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="foreground/main_menu/options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="foreground/main_menu/new_game" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="foreground/main_menu/quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="foreground/options_panel/back" to="." method="_on_back_pressed"]
 [connection signal="back_pressed" from="foreground/options_template" to="." method="_on_options_back_pressed"]
 [connection signal="ui_redraw" from="foreground/options_template" to="." method="_on_ui_redraw"]
+[connection signal="pressed" from="foreground/new_game/delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="foreground/new_game/cancel" to="." method="_on_cancel_pressed"]

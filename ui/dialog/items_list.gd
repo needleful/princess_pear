@@ -1,31 +1,27 @@
 extends VBoxContainer
 
+# warning-ignore:unused_signal
 signal item_focused(item)
-signal item_pressed(id, item)
+# warning-ignore:unused_signal
+signal item_pressed(item)
 
 onready var list:Container = $ScrollContainer.container
-
-const DEFAULT_ICONS := {
-	ItemDescription.Category.Equipment: preload("res://ui/items/icons/default_equipment.svg"),
-	ItemDescription.Category.Firearm: preload("res://ui/items/icons/default_firearm.svg"),
-	ItemDescription.Category.Sundries: preload("res://ui/items/icons/default_sundries.svg"),
-	ItemDescription.Category.Keys: preload("res://ui/items/icons/default_keys.svg")
-}
+onready var sort_label := $sort/Label
 
 enum Sort {
-	Category,
+	Chronological,
 	Name,
 	Recency
 }
 
-var sort = Sort.Category
+var sort = Sort.Chronological
 var sort_func := [
-	"sort_by_category",
+	"sort_by_chronological",
 	"sort_by_name",
 	"sort_by_recency"
 ]
 var key_sort_func := [
-	"key_sort_by_category",
+	"sort_by_chronological",
 	"key_sort_by_name",
 	"key_sort_by_recency"
 ]
@@ -63,14 +59,12 @@ func insert_item(id:String, item: ItemDescription):
 	button.text = item.full_name.capitalize()
 	if item.custom_icon:
 		button.icon = item.custom_icon
-	else:
-		button.icon = DEFAULT_ICONS[item.category]
 	var _y = button.connect("focus_entered", self, "emit_signal", ["item_focused", item])
-	_y = button.connect("pressed", self, "emit_signal", ["item_pressed", id, item])
+	_y = button.connect("pressed", self, "emit_signal", ["item_pressed", item])
 	list.add_child(button)
 
 func view_items(items: Dictionary):
-	$sort/Label.text = "Sorting by: " + Sort.keys()[sort]
+	sort_label.text = "Sorting by: " + Sort.keys()[sort]
 	for id in items:
 		items[id].id = id
 	var sorted_items = items.values()
@@ -82,18 +76,8 @@ func view_items(items: Dictionary):
 	if list.get_child_count() > 0:
 		list.get_child(0).grab_focus()
 
-func sort_by_category(a: ItemDescription, b:ItemDescription):
-	if a.id == 'you':
-		return true
-	elif b.id == 'you':
-		return false
-
-	if a.category < b.category:
-		return true
-	elif b.category < a.category:
-		return false
-	else:
-		return a.full_name < b.full_name
+func sort_by_chronological(a: ItemDescription, b:ItemDescription):
+	return sort_by_recency(b, a)
 
 func sort_by_name(a: ItemDescription, b: ItemDescription):
 	return a.full_name < b.full_name
@@ -101,8 +85,8 @@ func sort_by_name(a: ItemDescription, b: ItemDescription):
 func sort_by_recency(a: ItemDescription, b: ItemDescription):
 	return key_sort_by_recency(a.id, b.id)
 
-func key_sort_by_category(a: String, b: String):
-	return sort_by_category(inventory[a], inventory[b])
+func key_sort_by_chronological(a: String, b: String):
+	return sort_by_chronological(inventory[a], inventory[b])
 
 func key_sort_by_name(a: String, b: String):
 	return sort_by_name(inventory[a], inventory[b])

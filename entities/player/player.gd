@@ -58,6 +58,7 @@ func _input(event):
 
 func _ready():
 	set_state(state)
+	cam.reset()
 
 func _physics_process(delta):
 	for e in input_buffer.keys():
@@ -119,6 +120,9 @@ func _process(_delta):
 		indicator.global_transform.origin = interact.get_overlapping_bodies()[0].global_transform.origin
 	else:
 		indicator.hide()
+
+func respawn():
+	cam.reset()
 
 func move(delta:float, desired_velocity: Vector3):
 	var gravity = GRAVITY

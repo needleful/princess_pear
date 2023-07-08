@@ -145,6 +145,8 @@ func _process(delta):
 			pitch.rotation_degrees.x = -80
 
 func reset():
+	yaw.global_transform.basis = player.global_transform.basis
+	yaw.rotate_y(PI)
 	camera.transform.basis = cam_basis
 	locked = false
 	set_aiming(false)
