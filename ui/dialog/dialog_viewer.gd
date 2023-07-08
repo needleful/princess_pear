@@ -2,9 +2,6 @@ extends Control
 
 signal started
 signal exited(state)
-signal exited_anim(animation)
-signal event(id)
-signal event_with_source(id, source)
 signal pick_item
 signal new_contextual_reply
 signal control_screen(controlled)
@@ -557,10 +554,7 @@ func format(style: String):
 	return {"_format":style}
 
 func event(tag: String):
-	emit_signal("event", tag)
-	emit_signal("event_with_source", tag, main_speaker)
-	if main_speaker.has_method(tag):
-		main_speaker.call(tag)
+	get_tree().call_group("dialog_event_reciever", "_on_event", tag)
 	return true
 
 func exit_event(tag: String):
@@ -589,13 +583,6 @@ func exit(state := PlayerBody.State.Ground):
 	emit_signal("exited", state)
 	if main_speaker.has_method("exit_dialog"):
 		main_speaker.exit_dialog()
-	set_process_input(false)
-	return RESULT_END
-
-func exit_anim(animation:String):
-	var stat: String = get_talked_stat()
-	var _x = Global.add_stat(stat)
-	emit_signal("exited_anim", animation)
 	set_process_input(false)
 	return RESULT_END
 

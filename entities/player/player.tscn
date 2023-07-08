@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://entities/player/player.gd" type="Script" id=1]
 [ext_resource path="res://entities/player/cam_rig.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://ui/pause_menu/pause_menu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui/default_theme.tres" type="Theme" id=7]
 [ext_resource path="res://ui/dialog/dialog_viewer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://levels/endgame.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ui/fonts/narration_font.tres" type="DynamicFont" id=10]
 
 [sub_resource type="ShaderMaterial" id=4]
@@ -36,6 +37,37 @@ radius = 0.5
 extents = Vector3( 0.741259, 1, 0.945753 )
 
 [sub_resource type="PrismMesh" id=7]
+
+[sub_resource type="Animation" id=13]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "fade_to_black"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="CylinderMesh" id=8]
 top_radius = 0.0
@@ -88,10 +120,11 @@ tracks/0/keys = {
 "values": [ Vector3( -180, 0, 0 ), Vector3( -180, 360, 0 ) ]
 }
 
-[node name="player" type="KinematicBody" groups=["player"]]
+[node name="player" type="KinematicBody" groups=["dialog_event_reciever", "player"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 2
 script = ExtResource( 1 )
+endgame_scene = ExtResource( 9 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
@@ -210,9 +243,19 @@ fonts = {
 "narration": ExtResource( 10 )
 }
 colors = {
-"narration": Color( 0.772549, 0.772549, 0.772549, 1 ),
-"you": Color( 0.47451, 1, 0.505882, 1 )
+"narration": Color( 0.156863, 0.12549, 0.12549, 1 ),
+"you": Color( 0.027451, 0.376471, 0.270588, 1 )
 }
+
+[node name="fade_to_black" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="fade_to_black"]
+anims/RESET = SubResource( 13 )
+anims/fade_to_black = SubResource( 14 )
 
 [node name="free_nodes" type="Node" parent="."]
 

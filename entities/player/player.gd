@@ -16,6 +16,8 @@ const MIN_DOT_FALL := 0.1
 const MIN_DOT_SLIDE := 0.7
 const MIN_DOT_SLIDE_END := 0.8
 
+export(PackedScene) var endgame_scene
+
 onready var ground_area:Area = $ground_area
 onready var cam := $cam_rig
 onready var interact := $intention/interact
@@ -275,3 +277,12 @@ func is_grounded() -> bool:
 
 func is_locked() -> bool:
 	return state == State.Locked
+
+func _on_event(event):
+	match event:
+		"endgame":
+			var a = $fade_to_black/AnimationPlayer
+			a.play("fade_to_black")
+			yield(a, "animation_finished")
+			var _x = get_tree().change_scene_to(endgame_scene)
+		

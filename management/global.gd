@@ -210,7 +210,7 @@ func reset_game():
 		print("Backing up save...")
 		# copy as a backup
 		var _x = dir.rename(save_path, old_save_backup)
-	var _x = get_tree().reload_current_scene()
+	var _x = get_tree().change_scene("res://levels/00_intro.tscn")
 
 func save_checkpoint(pos: Transform, sleeping := false):
 	set_stat("player_sleeping", sleeping)
