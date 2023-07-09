@@ -1,0 +1,29 @@
+[gd_resource type="AnimationNodeBlendTree" load_steps=6 format=2]
+
+[sub_resource type="AnimationNodeAnimation" id=6]
+animation = "Idle-loop"
+
+[sub_resource type="AnimationNodeAnimation" id=7]
+animation = "Capture"
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "Walk-loop"
+
+[sub_resource type="AnimationNodeOneShot" id=8]
+
+[sub_resource type="AnimationNodeBlend2" id=4]
+
+[resource]
+graph_offset = Vector2( -338.537, 59 )
+nodes/Animation/node = SubResource( 3 )
+nodes/Animation/position = Vector2( -240, 200 )
+"nodes/Animation 2/node" = SubResource( 6 )
+"nodes/Animation 2/position" = Vector2( -240, 80 )
+"nodes/Animation 3/node" = SubResource( 7 )
+"nodes/Animation 3/position" = Vector2( 60, 360 )
+nodes/Capture/node = SubResource( 8 )
+nodes/Capture/position = Vector2( 280, 120 )
+nodes/Walk/node = SubResource( 4 )
+nodes/Walk/position = Vector2( 60, 140 )
+nodes/output/position = Vector2( 480, 140 )
+node_connections = [ "output", 0, "Capture", "Walk", 0, "Animation 2", "Walk", 1, "Animation", "Capture", 0, "Walk", "Capture", 1, "Animation 3" ]

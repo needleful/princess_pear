@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://_glb/props/canon.glb" type="PackedScene" id=1]
 [ext_resource path="res://entities/interactive/animated.gd" type="Script" id=2]
@@ -31,6 +31,21 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 30, 0, 0 ), Vector3( 60, 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=4]
+resource_name = "FailedActivate"
+tracks/0/type = "value"
+tracks/0/path = NodePath("canon-base-kine/canon-kine:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1.51572, 1, 2, 0.3, 2, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 3.00677, 0, 0 ), Vector3( 3.00677, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 1.28076, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
 [sub_resource type="Animation" id=3]
 length = 0.001
 tracks/0/type = "value"
@@ -60,4 +75,5 @@ material/0 = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 anims/Activate = SubResource( 2 )
+anims/FailedActivate = SubResource( 4 )
 anims/RESET = SubResource( 3 )

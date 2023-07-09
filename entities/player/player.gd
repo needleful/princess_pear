@@ -1,6 +1,9 @@
 extends KinematicBody
 class_name PlayerBody
 
+signal captured
+signal fell
+
 enum State {
 	Ground,
 	Jump,
@@ -27,7 +30,7 @@ var state:int = State.Ground
 var velocity := Vector3.ZERO
 var ground_normal := Vector3.UP
 var best_floor : Node
-var last_good_position := Vector3.ZERO
+var last_good_position := Transform()
 
 var accel_start := 45.0
 var accel_continue := 20.0
@@ -74,8 +77,8 @@ func _physics_process(delta):
 		velocity.y = TERMINAL_VELOCITY
 
 	if global_transform.origin.y < MIN_Y:
-		get_fade_animation().play("fade_into_scene")
-		global_transform.origin = last_good_position
+		emit_signal("fell")
+		teleport_to(last_good_position)
 	ground_normal = Vector3.DOWN
 	for c in range(get_slide_count()):
 		var col := get_slide_collision(c)
@@ -118,7 +121,7 @@ func _physics_process(delta):
 	match state:
 		State.Ground:
 			if is_on_floor():
-				last_good_position = global_transform.origin
+				last_good_position = global_transform
 			move(delta, desired_velocity)
 		State.Slide:
 			move_slide(delta, desired_velocity)
@@ -248,6 +251,19 @@ func set_state(new_state):
 		timers[i] = 0.0
 		i += 1
 
+func on_capture():
+	lock()
+	var a = get_fade_animation()
+	a.play("fade_to_black")
+	yield(a, "animation_finished")
+	var _x = Global.add_stat("player_captured")
+	emit_signal("captured")
+
+func teleport_to(location: Transform):
+	get_fade_animation().play("fade_into_scene")
+	global_transform = location
+	cam.reset()
+
 func rotate_mesh(dir:Vector3):
 	dir.y = 0
 	dir = dir.normalized()
@@ -318,4 +334,6 @@ func get_fade_animation():
 	return get_node("fade_to_black/AnimationPlayer")
 
 func prepare_save():
-	Global.game_state.checkpoint_position = global_transform
+	# To prevent saving the position when captured
+	if state != State.Locked:
+		Global.game_state.checkpoint_position = global_transform

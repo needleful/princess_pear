@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/makau.glb-40df00022785ccdbd1f3c036cbbfba0c.scn"
+path="res://.import/murdurian.glb-b8e8f3d2f66e695559d4d38ff441e825.scn"
 
 [deps]
 
-source_file="res://_glb/characters/makau.glb"
-dest_files=[ "res://.import/makau.glb-40df00022785ccdbd1f3c036cbbfba0c.scn" ]
+source_file="res://_glb/characters/murdurian.glb"
+dest_files=[ "res://.import/murdurian.glb-b8e8f3d2f66e695559d4d38ff441e825.scn" ]
 
 [params]
 

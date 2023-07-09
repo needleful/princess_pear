@@ -8,5 +8,8 @@ export(String) var custom_entry: String
 export(Dictionary) var custom_fonts
 export(Dictionary) var custom_colors
 
+func can_interact() -> bool:
+	return !!sequence
+
 func interact(player: PlayerBody):
 	player.ui.start_dialog(self, get_parent())

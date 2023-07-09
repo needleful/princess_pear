@@ -3,6 +3,7 @@ extends Node
 signal inventory_changed
 signal item_changed(item, change, count)
 signal stat_changed(tag, value)
+signal save_completed
 
 var using_gamepad := false
 
@@ -41,7 +42,6 @@ func _input(event):
 
 func change_level_to(scene: PackedScene):
 	switching_scenes = true
-	set_stat("level", scene.resource_path)
 	return get_tree().change_scene_to(scene)
 
 func get_mouse_zoom_axis() -> float:
@@ -229,8 +229,7 @@ func reset_game():
 	if res != OK:
 		print_debug("could not go back to starting scene!")
 
-func save_checkpoint(pos: Transform, sleeping := false):
-	set_stat("player_sleeping", sleeping)
+func save_checkpoint(pos: Transform):
 	game_state.checkpoint_position = pos
 	save_async()
 
@@ -270,6 +269,7 @@ func save_complete(result):
 	if result == OK:
 		valid_game_state = true
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_REALTIME, "post_save_object", "complete_save")
+	emit_signal("save_completed")
 
 func _save_sync(p_state : GameState):
 	var r = ResourceSaver.save(save_path, p_state)

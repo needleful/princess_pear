@@ -127,12 +127,11 @@ tracks/0/keys = {
 }
 
 [node name="player" type="KinematicBody" groups=["dialog_event_reciever", "player", "pre_save_object"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 2
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0 )
 shape = SubResource( 2 )
 
 [node name="cam_rig" type="Node" parent="."]
@@ -141,7 +140,7 @@ script = ExtResource( 2 )
 [node name="yaw" type="Spatial" parent="cam_rig"]
 
 [node name="pitch" type="Spatial" parent="cam_rig/yaw"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.894389, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.89439, 0 )
 
 [node name="Camera" type="Camera" parent="cam_rig/yaw/pitch"]
 near = 0.1
@@ -154,13 +153,14 @@ shape = SubResource( 3 )
 spring_length = 5.0
 
 [node name="ground_area" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.587721, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.412279, 0 )
 collision_layer = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="ground_area"]
 shape = SubResource( 5 )
 
 [node name="intention" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 visible = false
 
 [node name="interact" type="Area" parent="intention"]
@@ -237,12 +237,12 @@ script = ExtResource( 11 )
 
 [node name="viewer" parent="ui/modal/dialog" instance=ExtResource( 8 )]
 anchor_left = 0.7
-margin_left = -302.8
+margin_left = -152.8
 margin_top = 10.0
 margin_right = -10.0
-margin_bottom = -10.0
+margin_bottom = -9.9928
 grow_horizontal = 0
-rect_min_size = Vector2( 520, 0 )
+rect_min_size = Vector2( 450, 0 )
 fonts = {
 "letter": ExtResource( 10 ),
 "narration": ExtResource( 10 )
@@ -359,7 +359,6 @@ anims/RESET = SubResource( 11 )
 anims/spin = SubResource( 12 )
 
 [node name="princess" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 
 [connection signal="exit" from="ui/modal/pause_menu" to="ui/modal" method="unpause"]
 [connection signal="exited" from="ui/modal/dialog/viewer" to="ui/modal" method="_on_dialog_exited"]

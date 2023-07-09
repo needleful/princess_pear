@@ -1,0 +1,105 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://_glb/characters/murdurian.glb" type="PackedScene" id=1]
+[ext_resource path="res://visuals/materials/main_transparent.shader" type="Shader" id=2]
+[ext_resource path="res://visuals/materials/main_spatial.shader" type="Shader" id=3]
+[ext_resource path="res://entities/npc/faces/murdurian_eye_normal.png" type="Texture" id=4]
+[ext_resource path="res://entities/npc/murdurian.png" type="Texture" id=5]
+[ext_resource path="res://entities/npc/npc.gd" type="Script" id=6]
+[ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=7]
+[ext_resource path="res://dialog/script.dialog" type="Resource" id=8]
+[ext_resource path="res://entities/npc/enemy_tree.tres" type="AnimationNodeBlendTree" id=9]
+
+[sub_resource type="BoxShape" id=13]
+extents = Vector3( 0.600142, 0.371723, 0.713025 )
+
+[sub_resource type="CylinderShape" id=11]
+height = 1.34253
+radius = 2.56769
+
+[sub_resource type="BoxShape" id=12]
+extents = Vector3( 5.78239, 1, 10.2492 )
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = ExtResource( 3 )
+shader_param/subsurface_scattering = -1.0
+shader_param/softness = 1.0
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 5 )
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = ExtResource( 2 )
+shader_param/subsurface_scattering = -1.0
+shader_param/softness = 1.0
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 4 )
+
+[sub_resource type="CapsuleShape" id=9]
+radius = 0.364263
+height = 0.336822
+
+[sub_resource type="BoxShape" id=10]
+extents = Vector3( 0.39813, 0.371136, 0.601801 )
+
+[node name="murdurian" instance=ExtResource( 1 )]
+collision_layer = 16
+collision_mask = 3
+script = ExtResource( 6 )
+state = 4
+visual_name = "Murdurian"
+friendly_id = "murdurian"
+custom_entry = "patrol"
+speed = 4.0
+mesh_path = NodePath("Armature")
+
+[node name="capture" type="Area" parent="Armature" index="0"]
+transform = Transform( -1, 0, 9.68575e-08, 0, 1, 0, -9.68575e-08, 0, -1, 0, 0, 0 )
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Armature/capture" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.430157, -0.340044 )
+shape = SubResource( 13 )
+
+[node name="awareness" type="Area" parent="Armature" index="1"]
+transform = Transform( -1, 0, 9.68575e-08, 0, 1, 0, -9.68575e-08, 0, -1, 0, 0, 0 )
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Armature/awareness" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.666839, -0.66204 )
+shape = SubResource( 11 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="Armature/awareness" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.487979, -9.34879 )
+shape = SubResource( 12 )
+
+[node name="murdurian" parent="Armature/Skeleton" index="0"]
+material/0 = SubResource( 7 )
+material/1 = SubResource( 8 )
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = ExtResource( 9 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/Capture/active = false
+parameters/Walk/blend_amount = 0.0
+
+[node name="CollisionShape" type="CollisionShape" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.528048, 0 )
+shape = SubResource( 9 )
+
+[node name="interaction" type="KinematicBody" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30699, 0 )
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 7 )
+sequence = ExtResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="interaction" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.635974, 0 )
+shape = SubResource( 10 )
+
+[node name="NavigationAgent" type="NavigationAgent" parent="." index="5"]
