@@ -24,7 +24,7 @@ func _on_event(event):
 				print_debug("Could not go to next level: ", next_level.resource_path)
 
 func _on_player_captured():
-	Global.add_stat("mention_capture")
+	var _x = Global.add_stat("mention_capture")
 	var m := $makau
 	var respawn:Spatial
 	var p:Spatial = m.get_current_point()
@@ -34,4 +34,4 @@ func _on_player_captured():
 		respawn = p.get_node("player_respawn")
 	Global.save_checkpoint(respawn.global_transform)
 	yield(Global, "save_completed")
-	var _x = get_tree().reload_current_scene()
+	_x = get_tree().reload_current_scene()

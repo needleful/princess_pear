@@ -56,7 +56,7 @@ func _physics_process(delta):
 		else:
 			track_target()
 	if state != State.Idle:
-		if nav.is_navigation_finished() or nav.is_target_reached():
+		if complete():
 			if state == State.Patrol:
 				next_point()
 			else:
@@ -67,14 +67,7 @@ func _physics_process(delta):
 				if target_node:
 					rotate_mesh(target_node.global_transform.basis.z)
 		else:
-			var dir := (nav.get_next_location() - global_transform.origin).normalized()
-			var hvel = velocity
-			hvel.y = 0
-			var s := speed if state != State.Chase else chase_speed
-			hvel = hvel.move_toward(dir*s, 60.0*delta)
-			hvel.y = velocity.y
-			velocity = move_and_slide_with_snap(hvel + GRAVITY*delta, Vector3.DOWN*0.25, Vector3.UP)
-	
+			move(delta)
 	if tethered:
 		var d2:float = (player.global_transform.origin - global_transform.origin).length_squared()
 		if d2 > MAX_DIST*MAX_DIST:
@@ -96,6 +89,18 @@ func _physics_process(delta):
 	tree["parameters/Walk/blend_amount"] = velocity.length()/speed
 	if velocity.length_squared() > 0.01:
 		rotate_mesh(velocity)
+
+func complete():
+	return !nav.is_target_reachable() or nav.is_navigation_finished() or nav.is_target_reached()
+
+func move(delta:float):
+	var dir := (nav.get_next_location() - global_transform.origin).normalized()
+	var hvel = velocity
+	hvel.y = 0
+	var s := speed if state != State.Chase else chase_speed
+	hvel = hvel.move_toward(dir*s, 60.0*delta)
+	hvel.y = velocity.y
+	velocity = move_and_slide_with_snap(hvel + GRAVITY*delta, Vector3.DOWN*0.25, Vector3.UP)
 
 func track_target():
 	var loc := target_node.global_transform.origin
