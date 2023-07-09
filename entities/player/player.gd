@@ -113,8 +113,8 @@ func _physics_process(delta):
 			if after(0.1):
 				set_state(State.Fall)
 	var movement := Input.get_vector("mv_left", "mv_right", "mv_up", "mv_down")
-	$ui/modal/debug/stats/a2.text = "Input: {%.3f, %.3f}" % [movement.x, movement.y]
-	$ui/modal/debug/stats/a3.text = "Ground: {%.3f}" % ground_normal.y
+	$ui/modal/gaming/debug/stats/a2.text = "Input: {%.3f, %.3f}" % [movement.x, movement.y]
+	$ui/modal/gaming/debug/stats/a3.text = "Ground: {%.3f}" % ground_normal.y
 	var desired_velocity: Vector3 = speed_max*(
 		cam.yaw.global_transform.basis.x * movement.x
 		+ cam.yaw.global_transform.basis.z * movement.y)
@@ -138,8 +138,10 @@ func _physics_process(delta):
 func _process(_delta):
 	if !is_locked() and !empty(interact):
 		indicator.show()
+		$ui/modal/gaming/talk.show()
 		indicator.global_transform.origin = interact.get_overlapping_bodies()[0].global_transform.origin
 	else:
+		$ui/modal/gaming/talk.hide()
 		indicator.hide()
 
 func respawn():
@@ -223,7 +225,7 @@ func move_air(delta:float, desired_velocity:Vector3):
 
 func set_state(new_state):
 	#print(State.keys()[state], " -> ", State.keys()[new_state])
-	$ui/modal/debug/stats/a1.text = "State: " + State.keys()[new_state]
+	$ui/modal/gaming/debug/stats/a1.text = "State: " + State.keys()[new_state]
 	match new_state:
 		State.Ground:
 			accel_start = 45.0

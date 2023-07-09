@@ -189,35 +189,69 @@ margin_right = 1024.0
 margin_bottom = 587.996
 script = ExtResource( 5 )
 
-[node name="debug" type="PanelContainer" parent="ui/modal"]
+[node name="gaming" type="Control" parent="ui/modal"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="debug" type="PanelContainer" parent="ui/modal/gaming"]
 visible = false
 margin_right = 258.0
 margin_bottom = 210.0
 
-[node name="stats" type="VBoxContainer" parent="ui/modal/debug"]
+[node name="stats" type="VBoxContainer" parent="ui/modal/gaming/debug"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 254.0
 margin_bottom = 206.0
 
-[node name="a1" type="Label" parent="ui/modal/debug/stats"]
+[node name="a1" type="Label" parent="ui/modal/gaming/debug/stats"]
 margin_right = 250.0
 margin_bottom = 21.0
 
-[node name="a2" type="Label" parent="ui/modal/debug/stats"]
+[node name="a2" type="Label" parent="ui/modal/gaming/debug/stats"]
 margin_top = 25.0
 margin_right = 250.0
 margin_bottom = 46.0
 
-[node name="a3" type="Label" parent="ui/modal/debug/stats"]
+[node name="a3" type="Label" parent="ui/modal/gaming/debug/stats"]
 margin_top = 50.0
 margin_right = 250.0
 margin_bottom = 71.0
 
-[node name="a4" type="Label" parent="ui/modal/debug/stats"]
+[node name="a4" type="Label" parent="ui/modal/gaming/debug/stats"]
 margin_top = 75.0
 margin_right = 250.0
 margin_bottom = 96.0
+
+[node name="talk" type="HBoxContainer" parent="ui/modal/gaming"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -82.0
+margin_top = -88.9928
+margin_right = 82.0
+margin_bottom = -24.9928
+grow_vertical = 0
+
+[node name="input_prompt" parent="ui/modal/gaming/talk" instance=ExtResource( 12 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 64.0
+margin_bottom = 64.0
+action = "interact"
+
+[node name="PanelContainer" type="PanelContainer" parent="ui/modal/gaming/talk"]
+margin_left = 68.0
+margin_right = 164.0
+margin_bottom = 64.0
+
+[node name="Label" type="Label" parent="ui/modal/gaming/talk/PanelContainer"]
+margin_left = 4.0
+margin_top = 21.0
+margin_right = 92.0
+margin_bottom = 42.0
+text = "   Interact   "
 
 [node name="pause_menu" parent="ui/modal" instance=ExtResource( 6 )]
 visible = false
@@ -231,6 +265,7 @@ margin_right = 161.5
 margin_bottom = 213.0
 
 [node name="dialog" type="Control" parent="ui/modal"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 11 )

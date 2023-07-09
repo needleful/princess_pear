@@ -226,10 +226,13 @@ Hm... Alright. You can come in.
 	[main_speaker tether]
 	[main_speaker next_point]
 {otherwise}[main_speaker at: #1]
-	This is where you friends will be as we go about the spire!
-	You -- Can't they come with us?
-	What, and steal our priceless treasures? No!
-	They'll stay here and enjoy the Lizard Wizard's presentation of our kingdom's history!
+	That's the game.
+	You -- What?! That's the entire game?
+	Yep. It turns out a story-driven 3D platformer with unique dialog mechanics isn't a good fit for a 2-day design window.
+	Now bugger off. Or something.
+	> I'm going to keep running around.
+	> Alright, let's just end the game now.
+		[event: endgame]
 {otherwise}
 	I'm working on it!
 [exit]
