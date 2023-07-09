@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://entities/npc/peabody.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/npc/pea_pie_po.png" type="Texture" id=2]
+[ext_resource path="res://visuals/materials/main_spatial.shader" type="Shader" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/subsurface_scattering = -0.453
+shader_param/softness = 0.805
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 2 )
+
+[node name="pea_pie_po" instance=ExtResource( 1 )]
+visual_name = "Pea Pie Po"
+friendly_id = "pea_pie_po"
+
+[node name="peabody" parent="Armature/Skeleton" index="0"]
+material/0 = SubResource( 1 )

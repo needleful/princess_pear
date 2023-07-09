@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://entities/npc/enemy_tree.tres" type="AnimationNodeBlendTree" id=1]
+[ext_resource path="res://_glb/characters/peabody.glb" type="PackedScene" id=2]
+[ext_resource path="res://entities/npc/npc.gd" type="Script" id=3]
+[ext_resource path="res://visuals/materials/main_spatial.shader" type="Shader" id=4]
+[ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=5]
+[ext_resource path="res://dialog/script.dialog" type="Resource" id=6]
+
+[sub_resource type="BoxShape" id=3]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 4 )
+shader_param/subsurface_scattering = null
+shader_param/softness = 1.0
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.233538
+height = 0.534951
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 0.259846, 0.508432, 0.291556 )
+
+[node name="peabody" instance=ExtResource( 2 )]
+collision_layer = 16
+collision_mask = 3
+script = ExtResource( 3 )
+speed = 3.0
+chase_speed = 4.0
+mesh_path = NodePath("Armature")
+
+[node name="awareness" type="Area" parent="Armature" index="0"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Armature/awareness" index="0"]
+shape = SubResource( 3 )
+
+[node name="capture" type="Area" parent="Armature" index="1"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Armature/capture" index="0"]
+shape = SubResource( 3 )
+
+[node name="peabody" parent="Armature/Skeleton" index="0"]
+material/0 = SubResource( 2 )
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
+tree_root = ExtResource( 1 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/Capture/active = false
+parameters/Walk/blend_amount = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.504634, 2.20582e-08 )
+shape = SubResource( 1 )
+
+[node name="interaction" type="KinematicBody" parent="." index="5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49407, 0 )
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 5 )
+sequence = ExtResource( 6 )
+
+[node name="CollisionShape" type="CollisionShape" parent="interaction" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.615281, 0 )
+shape = SubResource( 4 )

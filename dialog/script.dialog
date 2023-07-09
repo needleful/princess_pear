@@ -154,7 +154,8 @@ Pea Plum Pink -- Excellent! We'll need that to gain entry.
 Hey.
 You -- Why are you here?
 You tell me.
-[event: frank_leaves]
+[main_speaker next_point]
+[main_speaker disable_dialog]
 > To steal the Martin brothers' valor!
 > To betray us to Lord Gizzard!
 > To bellyache the entire mission!

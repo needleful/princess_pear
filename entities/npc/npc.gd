@@ -36,7 +36,7 @@ func _ready():
 	$interaction.friendly_id = friendly_id
 	$interaction.visual_name = visual_name
 	var _x = mesh.get_node("capture").connect("body_entered", self, "on_player_captured")
-	if !nav.get_navigation() is Navigation:
+	if nav and !nav.get_navigation() is Navigation:
 		for g in get_tree().get_nodes_in_group("navigation"):
 			nav.set_navigation(g)
 			break
@@ -50,51 +50,65 @@ func _ready():
 		tether()
 
 func _physics_process(delta):
-	if state == State.Chase:
-		if !target_node:
-			state = State.Idle
-		else:
-			track_target()
-	if state != State.Idle:
-		if complete():
-			if state == State.Patrol:
-				next_point()
+	match state:
+		State.Chase:
+			if !target_node:
+				state = State.Idle
 			else:
+				track_target()
+			move(nav.get_next_location() , delta)
+		State.Patrol:
+			if complete():
+				next_point()
+			move(nav.get_next_location() , delta)
+			for b in awareness.get_overlapping_bodies():
+				var ds := PhysicsServer.space_get_direct_state(get_world().space)
+				var ray := ds.intersect_ray(global_transform.origin, b.global_transform.origin, [self], 3)
+				if ray and ray.collider == b:
+					state = State.Chase
+					target_node = b
+					print("the chase is on!!")
+		State.Moving:
+			if tethered:
+				tether_check()
+			if complete():
 				if friendly_id != "":
 					Global.set_stat("at/"+friendly_id, point)
 				state = State.Idle
 				velocity = Vector3.ZERO
 				if target_node:
 					rotate_mesh(target_node.global_transform.basis.z)
-		else:
-			move(delta)
-	if tethered:
-		var d2:float = (player.global_transform.origin - global_transform.origin).length_squared()
-		if d2 > MAX_DIST*MAX_DIST:
-			state = State.Chase
-			target_node = player
-			set_physics_process(true)
-	elif state == State.Idle:
-		set_physics_process(false)
-	
-	if state == State.Patrol:
-		for b in awareness.get_overlapping_bodies():
-			var ds := PhysicsServer.space_get_direct_state(get_world().space)
-			var ray := ds.intersect_ray(global_transform.origin, b.global_transform.origin, [self], 3)
-			if ray and ray.collider == b:
-				state = State.Chase
-				target_node = b
-				print("the chase is on!!")
+			else:
+				if nav and nav.get_navigation() is Navigation:
+					move(nav.get_next_location(), delta)
+				else:
+					move(target_node.global_transform.origin, delta)
+		State.Idle:
+			if tethered:
+				tether_check()
+			else:
+				set_physics_process(false)
 	
 	tree["parameters/Walk/blend_amount"] = velocity.length()/speed
 	if velocity.length_squared() > 0.01:
 		rotate_mesh(velocity)
 
-func complete():
-	return !nav.is_target_reachable() or nav.is_navigation_finished() or nav.is_target_reached()
+func tether_check():
+	var d2:float = (player.global_transform.origin - global_transform.origin).length_squared()
+	if d2 > MAX_DIST*MAX_DIST:
+		state = State.Chase
+		target_node = player
+		set_physics_process(true)
 
-func move(delta:float):
-	var dir := (nav.get_next_location() - global_transform.origin).normalized()
+func complete():
+	if nav:
+		return !nav.is_target_reachable() or nav.is_navigation_finished() or nav.is_target_reached()
+	else:
+		return !target_node or ( target_node.global_transform.origin 
+			- global_transform.origin).length_squared() < 4
+
+func move(target: Vector3, delta:float):
+	var dir := (target - global_transform.origin).normalized()
 	var hvel = velocity
 	hvel.y = 0
 	var s := speed if state != State.Chase else chase_speed
@@ -132,6 +146,9 @@ func rotate_mesh(dir:Vector3):
 	var angle = f.angle_to(dir)
 	mesh.global_rotate(axis, angle)
 
+func disable_dialog():
+	$interaction.queue_free()
+
 func next_point():
 	point += 1
 	if point > nav_points.size():
@@ -141,7 +158,8 @@ func next_point():
 		print_debug("No target:", path)
 		return false
 	target_node = get_node(path)
-	nav.set_target_location(target_node.global_transform.origin)
+	if nav:
+		nav.set_target_location(target_node.global_transform.origin)
 	if state == State.Idle:
 		state = State.Moving
 	set_physics_process(true)

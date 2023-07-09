@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://levels/part_dark_spire.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/player/player.tscn" type="PackedScene" id=2]
@@ -6,6 +6,13 @@
 [ext_resource path="res://dialog/script.dialog" type="Resource" id=4]
 [ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=5]
 [ext_resource path="res://levels/02_spire_tour.tscn" type="PackedScene" id=6]
+[ext_resource path="res://entities/npc/murdurian.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/npc/martin.tscn" type="PackedScene" id=8]
+[ext_resource path="res://entities/npc/pea_pie_po.tscn" type="PackedScene" id=9]
+[ext_resource path="res://entities/npc/pea_plum_pink.tscn" type="PackedScene" id=10]
+[ext_resource path="res://entities/npc/peabody.tscn" type="PackedScene" id=11]
+[ext_resource path="res://entities/npc/pea_frank.png" type="Texture" id=12]
+[ext_resource path="res://visuals/materials/main_spatial.shader" type="Shader" id=13]
 
 [sub_resource type="Environment" id=10]
 background_mode = 1
@@ -19,27 +26,19 @@ fog_depth_end = 600.0
 fog_height_enabled = true
 fog_height_max = -98.2
 
-[sub_resource type="CubeMesh" id=2]
-
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.55, 1.1, 0.5 )
 
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 1, 1, 1.16504 )
 
-[sub_resource type="SpatialMaterial" id=7]
-albedo_color = Color( 0.898039, 0.423529, 0.835294, 1 )
-
-[sub_resource type="SpatialMaterial" id=8]
-albedo_color = Color( 0.898039, 0.580392, 0.423529, 1 )
-
-[sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.423529, 0.898039, 0.486275, 1 )
-
-[sub_resource type="BoxShape" id=5]
-extents = Vector3( 0.5, 1, 0.5 )
-
-[sub_resource type="CubeMesh" id=6]
-size = Vector3( 1, 2, 1 )
+[sub_resource type="ShaderMaterial" id=11]
+shader = ExtResource( 13 )
+shader_param/subsurface_scattering = -1.0
+shader_param/softness = 1.0
+shader_param/specularity = 1.0
+shader_param/uv_scale = Vector2( 1, 1 )
+shader_param/main_texture = ExtResource( 12 )
 
 [node name="dark_spire" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
@@ -49,117 +48,24 @@ next_level = ExtResource( 6 )
 environment = SubResource( 10 )
 
 [node name="player" parent="." index="3" instance=ExtResource( 2 )]
-transform = Transform( -0.0313598, 0, -0.999508, 0, 1, 0, 0.999508, 0, -0.0313598, 195.656, 16.7971, 9.57861 )
+transform = Transform( -0.0313598, 0, -0.999508, 0, 1, 0, 0.999508, 0, -0.0313598, 208.989, 15.9845, 7.57536 )
 
-[node name="pea_pie_po" type="KinematicBody" parent="." index="4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 199.78, 17.0551, 2.07198 )
-
-[node name="MeshInstance" type="MeshInstance" parent="pea_pie_po" index="0"]
-mesh = SubResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="pea_pie_po" index="1"]
-shape = SubResource( 3 )
-
-[node name="dialog" type="KinematicBody" parent="pea_pie_po" index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
-collision_layer = 4
-collision_mask = 0
-script = ExtResource( 5 )
-sequence = ExtResource( 4 )
-friendly_id = "pea_pie_po"
-custom_entry = "pepipo_intro"
-
-[node name="CollisionShape" type="CollisionShape" parent="pea_pie_po/dialog" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
-shape = SubResource( 4 )
-
-[node name="pea_plum_pink" type="KinematicBody" parent="." index="5"]
-transform = Transform( 0.0461497, 0, -0.998935, 0, 1, 0, 0.998935, 0, 0.0461497, 205.466, 17.0551, 1.15643 )
-
-[node name="MeshInstance" type="MeshInstance" parent="pea_plum_pink" index="0"]
-mesh = SubResource( 2 )
-material/0 = SubResource( 7 )
-
-[node name="CollisionShape" type="CollisionShape" parent="pea_plum_pink" index="1"]
-shape = SubResource( 3 )
-
-[node name="dialog" type="KinematicBody" parent="pea_plum_pink" index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
-collision_layer = 4
-collision_mask = 0
-script = ExtResource( 5 )
-sequence = ExtResource( 4 )
-friendly_id = "pea_plum_pink"
-custom_entry = "peplupi_intro"
-
-[node name="CollisionShape" type="CollisionShape" parent="pea_plum_pink/dialog" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
-shape = SubResource( 4 )
-
-[node name="pea_frank" type="KinematicBody" parent="." index="6"]
-transform = Transform( -0.545685, 0, -0.83799, 0, 1, 0, 0.83799, 0, -0.545685, 209.531, 17.0551, 1.55105 )
-
-[node name="MeshInstance" type="MeshInstance" parent="pea_frank" index="0"]
-mesh = SubResource( 2 )
-material/0 = SubResource( 8 )
-
-[node name="CollisionShape" type="CollisionShape" parent="pea_frank" index="1"]
-shape = SubResource( 3 )
-
-[node name="dialog" type="KinematicBody" parent="pea_frank" index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
-collision_layer = 4
-collision_mask = 0
-script = ExtResource( 5 )
-sequence = ExtResource( 4 )
-friendly_id = "pea_frank"
-custom_entry = "frank_intro"
-
-[node name="CollisionShape" type="CollisionShape" parent="pea_frank/dialog" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
-shape = SubResource( 4 )
-
-[node name="guard" type="KinematicBody" parent="." index="7"]
-transform = Transform( 0.814387, 0, -0.580322, 0, 1, 0, 0.580322, 0, 0.814387, 79.3924, 11.3565, -7.69931 )
-
-[node name="MeshInstance" type="MeshInstance" parent="guard" index="0"]
-mesh = SubResource( 2 )
-material/0 = SubResource( 9 )
-
-[node name="CollisionShape" type="CollisionShape" parent="guard" index="1"]
-shape = SubResource( 3 )
-
-[node name="dialog" type="KinematicBody" parent="guard" index="2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
-collision_layer = 4
-collision_mask = 0
-script = ExtResource( 5 )
-sequence = ExtResource( 4 )
-friendly_id = "castle_guard"
-custom_entry = "guard_intro"
-
-[node name="CollisionShape" type="CollisionShape" parent="guard/dialog" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
-shape = SubResource( 4 )
-
-[node name="brothers" type="KinematicBody" parent="." index="8"]
+[node name="brothers" type="KinematicBody" parent="." index="4"]
 transform = Transform( 0.699082, 0, 0.715042, 0, 1, 0, -0.715042, 0, 0.699082, 193.925, 16.8076, -0.610703 )
 
 [node name="CollisionShape" type="CollisionShape" parent="brothers" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775558, 0, -0.0960541 )
 shape = SubResource( 5 )
 
-[node name="MeshInstance" type="MeshInstance" parent="brothers/CollisionShape" index="0"]
-mesh = SubResource( 6 )
-skeleton = NodePath("../..")
+[node name="martin" parent="brothers/CollisionShape" index="0" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0, -0.892328, 0 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="brothers" index="1"]
 transform = Transform( 0.851077, 0, 0.525041, 0, 1, 0, -0.525041, 0, 0.851077, -0.647583, -0.0376492, 0.0519409 )
 shape = SubResource( 5 )
 
-[node name="MeshInstance" type="MeshInstance" parent="brothers/CollisionShape2" index="0"]
-mesh = SubResource( 6 )
-skeleton = NodePath("../..")
+[node name="martin" parent="brothers/CollisionShape2" index="0" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0, -0.892328, 0 )
 
 [node name="dialog" type="KinematicBody" parent="brothers" index="2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6868, 0 )
@@ -174,9 +80,44 @@ custom_entry = "brothers_intro"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="9"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="5"]
 transform = Transform( -0.721727, 0.499615, -0.479056, -0.49852, 0.104947, 0.860502, 0.480195, 0.859867, 0.173325, 123.791, 62.0664, 0 )
 shadow_enabled = true
 directional_shadow_split_1 = 0.05
 directional_shadow_split_2 = 0.1
 directional_shadow_max_distance = 400.0
+
+[node name="murdurian" parent="." index="6" instance=ExtResource( 7 )]
+transform = Transform( 0.452678, 0, 0.891674, 0, 1, 0, -0.891674, 0, 0.452678, 80.676, 10.6242, -9.97051 )
+state = 0
+visual_name = "Murdurian Guard"
+friendly_id = "murdurian_guard"
+custom_entry = "guard_intro"
+
+[node name="pea_pie_po" parent="." index="7" instance=ExtResource( 9 )]
+transform = Transform( -0.0860814, 0, 0.996288, 0, 1, 0, -0.996288, 0, -0.0860814, 205.686, 15.8883, 8.07733 )
+custom_entry = "pepipo_intro"
+speed = 6.5
+chase_speed = 7.5
+
+[node name="pea_plum_pink" parent="." index="8" instance=ExtResource( 10 )]
+transform = Transform( 0.204392, 0, 0.978889, 0, 1, 0, -0.978889, 0, 0.204392, 204.59, 15.8601, 5.03549 )
+custom_entry = "peplupi_intro"
+speed = 6.5
+chase_speed = 7.5
+
+[node name="pea_frank" parent="." index="9" instance=ExtResource( 11 )]
+transform = Transform( 0.333073, 0, -0.942901, 0, 1, 0, 0.942901, 0, 0.333073, 222.049, 14.3396, 1.49722 )
+visual_name = "Pea Frank"
+friendly_id = "pea_frank"
+custom_entry = "frank_intro"
+nav_points = [ NodePath("../home") ]
+speed = 1.0
+
+[node name="peabody" parent="pea_frank/Armature/Skeleton" index="0"]
+material/0 = SubResource( 11 )
+
+[node name="home" type="Position3D" parent="." index="10"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 629.174, 0, 0 )
+
+[editable path="pea_frank"]

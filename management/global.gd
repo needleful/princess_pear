@@ -41,6 +41,7 @@ func _input(event):
 		get_tree().call_group("input_prompt", "_refresh")
 
 func change_level_to(scene: PackedScene):
+	var _x = set_stat("level", scene.resource_path)
 	switching_scenes = true
 	return get_tree().change_scene_to(scene)
 

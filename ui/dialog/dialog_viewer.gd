@@ -341,7 +341,6 @@ func use_item(item: ItemDescription):
 
 func get_speaker_name() -> String:
 	if "visual_name" in main_speaker and main_speaker.visual_name != "":
-		assert(main_speaker.visual_name.begins_with("M"))
 		return main_speaker.visual_name
 	elif "friendly_id" in main_speaker and main_speaker.friendly_id != "":
 		return main_speaker.friendly_id.capitalize()
