@@ -7,6 +7,18 @@
 [ext_resource path="res://entities/interactive/speaker.gd" type="Script" id=5]
 [ext_resource path="res://levels/02_spire_tour.tscn" type="PackedScene" id=6]
 
+[sub_resource type="Environment" id=10]
+background_mode = 1
+background_color = Color( 0.411765, 0.14902, 0.121569, 1 )
+ambient_light_color = Color( 0.392157, 0.392157, 0.396078, 1 )
+indirect_light_color = Color( 0.54902, 0.321569, 0.321569, 1 )
+fog_enabled = true
+fog_color = Color( 0.411765, 0.14902, 0.121569, 1 )
+fog_sun_color = Color( 1, 0.901961, 0.701961, 1 )
+fog_depth_end = 600.0
+fog_height_enabled = true
+fog_height_max = -98.2
+
 [sub_resource type="CubeMesh" id=2]
 
 [sub_resource type="BoxShape" id=3]
@@ -29,18 +41,17 @@ extents = Vector3( 0.5, 1, 0.5 )
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 1, 2, 1 )
 
-[sub_resource type="Environment" id=10]
-ambient_light_color = Color( 0.392157, 0.392157, 0.396078, 1 )
-indirect_light_color = Color( 0.54902, 0.321569, 0.321569, 1 )
-
 [node name="dark_spire" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 next_level = ExtResource( 6 )
 
-[node name="player" parent="." index="2" instance=ExtResource( 2 )]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
+environment = SubResource( 10 )
+
+[node name="player" parent="." index="3" instance=ExtResource( 2 )]
 transform = Transform( -0.0313598, 0, -0.999508, 0, 1, 0, 0.999508, 0, -0.0313598, 195.656, 16.7971, 9.57861 )
 
-[node name="pea_pie_po" type="KinematicBody" parent="." index="3"]
+[node name="pea_pie_po" type="KinematicBody" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 199.78, 17.0551, 2.07198 )
 
 [node name="MeshInstance" type="MeshInstance" parent="pea_pie_po" index="0"]
@@ -62,7 +73,7 @@ custom_entry = "pepipo_intro"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
 
-[node name="pea_plum_pink" type="KinematicBody" parent="." index="4"]
+[node name="pea_plum_pink" type="KinematicBody" parent="." index="5"]
 transform = Transform( 0.0461497, 0, -0.998935, 0, 1, 0, 0.998935, 0, 0.0461497, 205.466, 17.0551, 1.15643 )
 
 [node name="MeshInstance" type="MeshInstance" parent="pea_plum_pink" index="0"]
@@ -85,7 +96,7 @@ custom_entry = "peplupi_intro"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
 
-[node name="pea_frank" type="KinematicBody" parent="." index="5"]
+[node name="pea_frank" type="KinematicBody" parent="." index="6"]
 transform = Transform( -0.545685, 0, -0.83799, 0, 1, 0, 0.83799, 0, -0.545685, 209.531, 17.0551, 1.55105 )
 
 [node name="MeshInstance" type="MeshInstance" parent="pea_frank" index="0"]
@@ -108,7 +119,7 @@ custom_entry = "frank_intro"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
 
-[node name="guard" type="KinematicBody" parent="." index="6"]
+[node name="guard" type="KinematicBody" parent="." index="7"]
 transform = Transform( 0.814387, 0, -0.580322, 0, 1, 0, 0.580322, 0, 0.814387, 79.3924, 11.3565, -7.69931 )
 
 [node name="MeshInstance" type="MeshInstance" parent="guard" index="0"]
@@ -131,7 +142,7 @@ custom_entry = "guard_intro"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3078, 0 )
 shape = SubResource( 4 )
 
-[node name="brothers" type="KinematicBody" parent="." index="7"]
+[node name="brothers" type="KinematicBody" parent="." index="8"]
 transform = Transform( 0.699082, 0, 0.715042, 0, 1, 0, -0.715042, 0, 0.699082, 193.925, 16.8076, -0.610703 )
 
 [node name="CollisionShape" type="CollisionShape" parent="brothers" index="0"]
@@ -169,6 +180,3 @@ shadow_enabled = true
 directional_shadow_split_1 = 0.05
 directional_shadow_split_2 = 0.1
 directional_shadow_max_distance = 400.0
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="10"]
-environment = SubResource( 10 )

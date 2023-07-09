@@ -27,6 +27,7 @@ var state:int = State.Ground
 var velocity := Vector3.ZERO
 var ground_normal := Vector3.UP
 var best_floor : Node
+var last_good_position := Vector3.ZERO
 
 var accel_start := 45.0
 var accel_continue := 20.0
@@ -37,6 +38,7 @@ var decel_with := 10.0
 var speed_low := 2.0
 var speed_max := 7.0
 const VIS_SPEED := 5.0
+const MIN_Y = -20
 
 var timers := PoolRealArray()
 var input_buffer := {
@@ -71,6 +73,9 @@ func _physics_process(delta):
 	if velocity.y < TERMINAL_VELOCITY:
 		velocity.y = TERMINAL_VELOCITY
 
+	if global_transform.origin.y < MIN_Y:
+		get_fade_animation().play("fade_into_scene")
+		global_transform.origin = last_good_position
 	ground_normal = Vector3.DOWN
 	for c in range(get_slide_count()):
 		var col := get_slide_collision(c)
@@ -112,6 +117,8 @@ func _physics_process(delta):
 		+ cam.yaw.global_transform.basis.z * movement.y)
 	match state:
 		State.Ground:
+			if is_on_floor():
+				last_good_position = global_transform.origin
 			move(delta, desired_velocity)
 		State.Slide:
 			move_slide(delta, desired_velocity)

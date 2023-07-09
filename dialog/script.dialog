@@ -198,7 +198,7 @@ Hm... Alright. You can come in.
 [exit_event: next_level]
 
 :makau_tour
-[main_speaker at: 0]
+[main_speaker at: #0]
 	[event: m_laugh]
 	Maka'u -- Aaah hahaha! So the little princess arrived!
 		[event: m_teeth]
@@ -214,11 +214,34 @@ Hm... Alright. You can come in.
 		Eh... Hahaha! Of course it is! I am rude! The rudest, even!
 	Let's not dally. I'm to show you the might of the Spire, and by extension our Kingdom.
 	Meet me at the fountain!
-	[exit_event: m_walk1]
+	[main_speaker next_point]
+{otherwise}[main_speaker at: #1]
+	This is the fountain..
+{otherwise}
+	I'm working on it!
 [exit]
 
 :item_side_exit
-* Looking out over the ledge, you realized the rocks are close enough to the castle that your men could climb down and use this as a back exit!
 [Global add_item: side_exit]
+* Looking out over the ledge, you realized the rocks are close enough to the castle that your men could climb down and use this as a back exit!
 * You take note of this.
+[exit]
+
+:item_cannon
+[Global add_item: locked_cannon]
+* These cannons are gigantic! They're large enough that a person could be shot from it.
+* ... perhaps that's the best way up to Gizzard's room?
+> [skip] (Aim the cannon up.)
+	[main_speaker fail_activate]
+	* You push one. It's locked by some mechanism.
+	* This won't do at all, unless you can find a way to unlock it!
+> [skip] (Note it down and leave.)
+[exit]
+
+:item(cannon_key) :- entered_from == "item_cannon"
+[Global remove_item: locked_cannon]
+[Global add_item: unlocked_cannon]
+[main_speaker activate]
+* That's it! The cannon's unlocked.
+* Your men can use this to get to Gizzard's lair, if they don't mind some acrobatics!
 [exit]
